@@ -7,5 +7,6 @@ const {
 const url =
   VITE_REACT_STAGE === "DEV" ? VITE_REACT_DEV_URL : VITE_REACT_API_DOMAIN_URL;
 // : VITE_REACT_API_DOMAIN_URL;
+const stage = VITE_REACT_STAGE;
 
-export { url };
+export { url, stage };

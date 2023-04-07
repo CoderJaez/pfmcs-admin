@@ -5,7 +5,7 @@ const {
   VITE_REACT_STAGE,
 } = import.meta.env;
 const url =
-  VITE_REACT_STAGE === "DEV" ? VITE_REACT_DEV_URL : VITE_REACT_API_IP_URL;
+  VITE_REACT_STAGE === "DEV" ? VITE_REACT_DEV_URL : VITE_REACT_API_DOMAIN_URL;
 // : VITE_REACT_API_DOMAIN_URL;
 
 export { url };

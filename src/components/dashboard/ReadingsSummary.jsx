@@ -30,12 +30,11 @@ const ReadingsSummary = () => {
         let _labels = [];
         let _datasets = [];
         if (res) {
-          res.forEach((e) => {
-            if (_labels.length <= 0) {
-              e.labels.forEach((i) =>
-                _labels.push(moment(i).format("MMM-DD, hha")),
-              );
-            }
+          res.labels.forEach((t) =>
+            _labels.push(moment(t).format("MMM-DD, ha")),
+          );
+
+          res.readings.forEach((e) => {
             const values = [];
             let randomColor = colors[Math.floor(Math.random() * colors.length)];
             while (true) {
@@ -46,10 +45,9 @@ const ReadingsSummary = () => {
               randomColor = colors[Math.floor(Math.random() * colors.length)];
             }
 
-            e.values.forEach((v) => values.push(v));
             _datasets.push({
               label: e.name,
-              data: values,
+              data: e.values,
               fill: true,
               borderColor: documentStyle.getPropertyValue(
                 `--${randomColor}-500`,

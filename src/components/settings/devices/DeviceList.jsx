@@ -10,8 +10,6 @@ import { DeviceSchema } from "../../../validations/device";
 import { Toast } from "primereact/toast";
 import { DeviceService } from "../../../service/deviceService";
 import { InputText } from "primereact/inputtext";
-import axios from "axios";
-import { url } from "../../../constants/env";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 
@@ -116,7 +114,8 @@ const DeviceList = () => {
   };
 
   const routeDevice = (rowData) => {
-    navigate(`${rowData._id}/data-streams`);
+    console.log(rowData);
+    navigate(`${rowData.data._id}/data-streams`);
   };
   const openNew = () => {
     setDeviceDialog(true);

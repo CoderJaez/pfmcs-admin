@@ -21,6 +21,7 @@ const Device = ({ device, dataStreams }) => {
                     key={stream._id}
                     name={stream.name}
                     vpin={stream.vpin}
+                    sensor_type={stream.sensor_type}
                     deviceId={device.deviceId}
                   />
                 );

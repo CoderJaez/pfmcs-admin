@@ -2,6 +2,7 @@
 import React from "react";
 import Routers from "./routes/Routers";
 import PrimeReact from "primereact/api";
+import { ThresholdProvider } from "./context/thresholdContext";
 //theme
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 
@@ -13,9 +14,9 @@ import "primeicons/primeicons.css";
 
 const App = () => {
   return (
-    <div>
+    <ThresholdProvider>
       <Routers />
-    </div>
+    </ThresholdProvider>
   );
 };
 

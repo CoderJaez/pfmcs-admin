@@ -102,6 +102,19 @@ const SideNav = React.memo(() => {
                   <p>Remarks</p>
                 </Link>
               </li>
+
+              <li className="nav-item">
+                <Link
+                  to="settings/parameter-thresholds"
+                  className={`nav-link ${
+                    urlPath === "parameter-thresholds" ? "active" : ""
+                  }`}
+                  onClick={() => setUrlPath("parameter-thresholds")}
+                >
+                  <i className="nav-icon fas fa-device" />
+                  <p>Parameter threshold</p>
+                </Link>
+              </li>
             </ul>
           </nav>
           {/* /.sidebar-menu */}

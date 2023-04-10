@@ -150,6 +150,7 @@ const ReadingsRealtimeData = () => {
       );
     },
   };
+
   const exportCSV = () => {
     try {
       setLoading(true);
@@ -231,15 +232,7 @@ const ReadingsRealtimeData = () => {
         Hidden Download Link
       </CSVLink> */}
       <Toolbar left={printHeader} right={filterDateToolbar} className="mb-1" />
-      <Paginator
-        template={template}
-        first={page}
-        rows={limit}
-        totalRecords={totalRecords}
-        rowsPerPageOptions={[10, 20, 30, 50]}
-        onPageChange={onPageChange}
-        className="justify-content-end"
-      />
+
       <DataTable
         value={readings}
         lazy
@@ -259,7 +252,7 @@ const ReadingsRealtimeData = () => {
         first={page}
         rows={limit}
         totalRecords={totalRecords}
-        rowsPerPageOptions={[10, 20, 30, 50]}
+        rowsPerPageOptions={[10, 20, 30, 50, 100]}
         onPageChange={onPageChange}
         className="justify-content-end"
       />

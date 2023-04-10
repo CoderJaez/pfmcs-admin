@@ -18,7 +18,7 @@ const Dashboard = () => {
     <>
       <ContentLayout contentTitle="Dashboard">
         <DeviceList />
-        <CardLayout title={`Monthly readings for ${date}`}>
+        <CardLayout title={`Daily readings for ${date}`}>
           <div className="row">
             <div className="col-md-6">
               <TempSummary />

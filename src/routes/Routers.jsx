@@ -6,6 +6,7 @@ import {
   Readings,
   Remarks,
   ParamsThreshold,
+  ReadingsRealtimeData,
 } from "../pages";
 import AdminLayout from "../shared/components/layouts/AdminLayout";
 import { DeviceCard } from "../components/settings/devices";
@@ -41,6 +42,7 @@ const Routers = () => {
           />
 
           <Route path="/readings" element={<Readings />} />
+          <Route path="/rawdata-readings" element={<ReadingsRealtimeData />} />
         </Route>
         <Route path="*" element={<Error404 />} />
       </Routes>

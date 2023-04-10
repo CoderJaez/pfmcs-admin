@@ -13,4 +13,14 @@ export const ReadingService = {
         .catch((err) => reject(err.response));
     });
   },
+  getRealtimeReadings: async (search, page, limit, dateFrom, dateTo) => {
+    return await new Promise((resolve, reject) => {
+      axios
+        .get(
+          `${url}temp-readings/realtime?search=${search}&page=${page}&limit=${limit}&date_from=${dateFrom}&date_to=${dateTo}`,
+        )
+        .then((res) => resolve(res.data))
+        .catch((err) => reject(err.response));
+    });
+  },
 };

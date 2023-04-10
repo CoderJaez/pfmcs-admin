@@ -31,7 +31,7 @@ const ReadingsSummary = () => {
         let _datasets = [];
         if (res) {
           res.labels.forEach((t) =>
-            _labels.push(moment(t).format("MMM-DD, ha")),
+            _labels.push(moment(t).format("MMM-DD, h:mm a")),
           );
 
           res.readings.forEach((e) => {
@@ -79,7 +79,6 @@ const ReadingsSummary = () => {
           value={datetime12h}
           onChange={(e) => {
             setDatefrom(e.value);
-            console.log(e.value);
           }}
           showTime
           hourFormat="12"
@@ -90,7 +89,6 @@ const ReadingsSummary = () => {
           value={datetime12h}
           onChange={(e) => {
             setDateto(e.value);
-            console.log(e.value);
           }}
           showTime
           hourFormat="12"

@@ -8,7 +8,6 @@ import moment from "moment-timezone";
 import { Toolbar } from "primereact/toolbar";
 import { InputText } from "primereact/inputtext";
 import { Calendar } from "primereact/calendar";
-moment.tz.setDefault("Asia/Manila");
 
 const Readings = () => {
   const date = moment(new Date()).format(`YYYY-MM-DD`);
@@ -18,6 +17,7 @@ const Readings = () => {
   const [limit, setLimit] = useState(0);
   const [_dateFrom, setDatefrom] = useState(`${date} 00:00:00`);
   const [_dateTo, setDateto] = useState(`${date} 23:00:00`);
+
   const fetchData = async () => {
     console.log("Fetching");
     await ReadingService.getReadings(search, page, limit, _dateFrom, _dateTo)

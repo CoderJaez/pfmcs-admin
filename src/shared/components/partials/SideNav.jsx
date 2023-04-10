@@ -75,6 +75,18 @@ const SideNav = React.memo(() => {
                   <p>Readings</p>
                 </Link>
               </li>
+              <li className="nav-item">
+                <Link
+                  to="rawdata-readings"
+                  className={`nav-link ${
+                    urlPath === "rawdata-readings" ? "active" : ""
+                  }`}
+                  onClick={() => setUrlPath("rawdata-readings")}
+                >
+                  <i className="nav-icon fas  fa-book" />
+                  <p>Raw data Readings</p>
+                </Link>
+              </li>
 
               <li className="nav-header">Settings</li>
               <li className="nav-item">

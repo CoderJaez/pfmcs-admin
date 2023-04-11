@@ -4,12 +4,11 @@ import { ParamsThresholdService } from "../service/thresholdService";
 export const ThresholdContext = createContext();
 
 export const ThresholdProvider = ({ children }) => {
-  const [thresholds, setThresholds] = useState([]);
-
+  let thresholds;
   useEffect(() => {
     ParamsThresholdService.getThreshold(null, "")
       .then((data) => {
-        setThresholds(data);
+        thresholds = data;
       })
       .catch((err) => console.error("Error: ", err.message));
   }, []);

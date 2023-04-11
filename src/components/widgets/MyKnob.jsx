@@ -36,12 +36,11 @@ const MyKnob = ({ name, deviceId, vpin, sensor_type }) => {
           const value = data[0].value;
 
           if (currentDate >= createdAt) setSensor(value);
-          const threshold = getThreshold(sensor_type, value);
-
-          if (threshold) {
-            setThreshold(threshold);
+          const _threshold = getThreshold(sensor_type, value);
+          if (_threshold) {
+            setThreshold(_threshold);
             const container = containerRef.current;
-            container.innerHTML = threshold.recommendation;
+            if (container) container.innerHTML = threshold.recommendation;
           }
         }
       });

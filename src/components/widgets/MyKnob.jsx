@@ -78,13 +78,7 @@ const MyKnob = ({ name, deviceId, vpin, sensor_type }) => {
               color: "#fff",
               minWidth: "5rem",
             }}
-          >
-            <Badge
-              value="!"
-              severity="warning"
-              onClick={(e) => op.current.toggle(e)}
-            ></Badge>
-          </Avatar>
+          ></Avatar>
           <OverlayPanel ref={op}>
             <div ref={containerRef}></div>
           </OverlayPanel>

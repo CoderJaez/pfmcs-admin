@@ -1,10 +1,12 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef, useMemo } from "react";
 import axios from "axios";
 import { Knob } from "primereact/knob";
 import { url } from "../../constants/env";
 import moment from "moment-timezone";
 import { ThresholdContext } from "../../context/thresholdContext";
-
+import { OverlayPanel } from "primereact/overlaypanel";
+import { Avatar } from "primereact/avatar";
+import { Badge } from "primereact/badge";
 moment.tz.setDefault("Asia/Manila");
 
 const MyKnob = ({ name, deviceId, vpin, sensor_type }) => {
@@ -12,6 +14,14 @@ const MyKnob = ({ name, deviceId, vpin, sensor_type }) => {
   const getThreshold = useContext(ThresholdContext);
   const [color, setColor] = useState("#19A7CE");
   const [threshold, setThreshold] = useState(null);
+
+  const op = useRef(null);
+  const containerRef = useRef(null);
+
+  const parseString = (str) => {
+    const div = document.getElementsByClassName("p-overlaypanel-content");
+    div.innerHTML = str;
+  };
 
   const fetchData = async () => {
     try {
@@ -27,8 +37,11 @@ const MyKnob = ({ name, deviceId, vpin, sensor_type }) => {
 
           if (currentDate >= createdAt) setSensor(value);
           const threshold = getThreshold(sensor_type, value);
+
           if (threshold) {
             setThreshold(threshold);
+            const container = containerRef.current;
+            container.innerHTML = threshold.recommendation;
           }
         }
       });
@@ -56,16 +69,27 @@ const MyKnob = ({ name, deviceId, vpin, sensor_type }) => {
       />
       <p>{name}</p>
       {threshold ? (
-        <p
-          style={{
-            color: `#${threshold.color}`,
-            fontWeight: "bold",
-            padding: "0.1rem",
-            margin: "0",
-          }}
-        >
-          {threshold.label}
-        </p>
+        <>
+          <Avatar
+            label={threshold.label}
+            onClick={(e) => op.current.toggle(e)}
+            className="p-overlay-badge"
+            style={{
+              backgroundColor: `#${threshold.color}`,
+              color: "#fff",
+              minWidth: "5rem",
+            }}
+          >
+            <Badge
+              value="!"
+              severity="warning"
+              onClick={(e) => op.current.toggle(e)}
+            ></Badge>
+          </Avatar>
+          <OverlayPanel ref={op}>
+            <div ref={containerRef}></div>
+          </OverlayPanel>
+        </>
       ) : null}
     </div>
   );

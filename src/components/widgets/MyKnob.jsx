@@ -40,7 +40,7 @@ const MyKnob = ({ name, deviceId, vpin, sensor_type }) => {
           if (_threshold) {
             setThreshold(_threshold);
             const container = containerRef.current;
-            if (container) container.innerHTML = threshold.recommendation;
+            if (container) container.innerHTML = _threshold.recommendation;
           }
         }
       });

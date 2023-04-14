@@ -13,10 +13,9 @@ import { useNavigate } from "react-router-dom";
 export const ThresholdProvider = ({ children }) => {
   const { config, toggleToken } = useContext(UserAuthContext);
   const navigate = useNavigate();
-  const thresholds = useRef(null);
+  let thresholds = useRef(null);
   useEffect(() => {
-    toggleToken();
-    ParamsThresholdService.getThreshold(null, "", config.current)
+    ParamsThresholdService._getThreshold()
       .then((data) => {
         thresholds.current = data;
       })
@@ -36,7 +35,7 @@ export const ThresholdProvider = ({ children }) => {
   }
 
   return (
-    <ThresholdContext.Provider value={getThreshold}>
+    <ThresholdContext.Provider value={{ getThreshold, thresholds }}>
       {children}
     </ThresholdContext.Provider>
   );

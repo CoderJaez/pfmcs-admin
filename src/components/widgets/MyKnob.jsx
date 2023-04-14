@@ -12,7 +12,7 @@ moment.tz.setDefault("Asia/Manila");
 
 const MyKnob = ({ name, deviceId, vpin, sensor_type }) => {
   const [sensor, setSensor] = useState(0);
-  const getThreshold = useContext(ThresholdContext);
+  const { getThreshold, thresholds } = useContext(ThresholdContext);
   const [color, setColor] = useState("#19A7CE");
   const [threshold, setThreshold] = useState(null);
   const { config } = useContext(UserAuthContext);

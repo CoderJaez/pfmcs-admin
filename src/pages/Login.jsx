@@ -34,14 +34,15 @@ const Login = () => {
     } catch (error) {}
   };
 
-  const { touched, values, errors, handleChange, handleSubmit } = useFormik({
-    initialValues: {
-      email: "",
-      password: "",
-    },
-    validationSchema: LoginAuthSchema,
-    onSubmit,
-  });
+  const { touched, values, errors, handleChange, isSubmitting, handleSubmit } =
+    useFormik({
+      initialValues: {
+        email: "",
+        password: "",
+      },
+      validationSchema: LoginAuthSchema,
+      onSubmit,
+    });
 
   return (
     <>
@@ -88,6 +89,7 @@ const Login = () => {
                 <Button
                   label="Sign in"
                   size="small"
+                  loading={isSubmitting}
                   type="submit"
                   style={{ minWidth: "45%" }}
                 />

@@ -37,4 +37,13 @@ export const ParamsThresholdService = {
         .catch((err) => reject(err.response.data));
     });
   },
+
+  _getThreshold: async () => {
+    return await new Promise((resolve, reject) => {
+      axios
+        .get(`${url}summaries/thresholds/`)
+        .then((res) => resolve(res.data))
+        .catch((err) => reject(err.response.data));
+    });
+  },
 };

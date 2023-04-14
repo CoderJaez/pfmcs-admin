@@ -20,10 +20,6 @@ import { UserAuthContext } from "../context/UserAuthContext";
 const Routers = () => {
   const { toggleToken, userRef, logout } = useContext(UserAuthContext);
 
-  useEffect(() => {
-    toggleToken();
-    if (!userRef.current) logout();
-  }, []);
   return (
     <>
       <Routes>

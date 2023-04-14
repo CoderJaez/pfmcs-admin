@@ -2,7 +2,10 @@ import * as yup from "yup";
 
 export const ParamsThresholdSchema = yup.object({
   name: yup.string().required("Name is required"),
-  color: yup.string().required("Color is required"),
+  color: yup
+    .string()
+    .required("Color is required")
+    .max(6, "Color hex must not exceed to 6 characters"),
   category: yup.string().required(),
   label: yup.string().required(),
   min_value: yup

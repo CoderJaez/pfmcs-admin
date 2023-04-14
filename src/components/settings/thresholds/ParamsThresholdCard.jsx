@@ -297,6 +297,18 @@ const ParamsThresholdCard = () => {
               <span style={{ color: `#${values.color}` }}>
                 Hex: #{values.color}
               </span>
+
+              <InputText
+                id="color"
+                name="color"
+                value={values.color}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                className={errors.color && touched.color ? `p-invalid` : ""}
+              />
+              {errors.color && touched.color && (
+                <p className="text-danger">{errors.color}</p>
+              )}
             </div>
 
             <div style={{ marginTop: "1.2rem" }}>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { Button } from "primereact/button";
 import { ColorPicker } from "primereact/colorpicker";
 import { useFormik } from "formik";
@@ -12,6 +12,8 @@ import { Editor } from "primereact/editor";
 import { ParamsThresholdService } from "../../../service/thresholdService";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { UserAuthContext } from "../../../context/UserAuthContext";
+
 const ParamsThresholdCard = () => {
   const [threshold, setThreshold] = useState(null);
   const [edit, setEdit] = useState(false);
@@ -19,12 +21,13 @@ const ParamsThresholdCard = () => {
   const toast = useRef(null);
   const navigate = useNavigate();
   const [suffix, setSuffix] = useState("");
+  const { config, toggleToken } = useContext(UserAuthContext);
 
   const onSubmit = (values, actions) => {
     if (threshold && threshold._id !== undefined) {
       const updatedThreshold = { ...threshold, ...values };
       try {
-        ParamsThresholdService.updateThreshold(updatedThreshold)
+        ParamsThresholdService.updateThreshold(updatedThreshold, config.current)
           .then((res) => {
             if (res.success) {
               toast.current.show({
@@ -64,7 +67,7 @@ const ParamsThresholdCard = () => {
       }
     } else {
       try {
-        ParamsThresholdService.insertThreshold(values)
+        ParamsThresholdService.insertThreshold(values, config.current)
           .then((res) => {
             if (res.success) {
               toast.current.show({
@@ -151,12 +154,12 @@ const ParamsThresholdCard = () => {
   }, [values.category]);
 
   useEffect(() => {
+    toggleToken();
     if (id) {
-      ParamsThresholdService.getThreshold(id)
+      ParamsThresholdService.getThreshold(id, "", config.current)
         .then((data) => {
           setThreshold(data);
           const _threshold = data;
-          console.log(_threshold);
           setFieldValue("name", _threshold.name);
           setFieldValue("color", _threshold.color);
           setFieldValue("category", _threshold.category);

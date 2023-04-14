@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useFormik } from "formik";
 import { Dialog } from "primereact/dialog";
 import { Button } from "primereact/button";
-import { DeviceStreamSchema } from "../../../validations/DataStreamSchema";
+import { DeviceStreamSchema } from "../../../validations/dataStream";
 import { DataStreamService } from "../../../service/dataStreamService";
 import { Toast } from "primereact/toast";
 

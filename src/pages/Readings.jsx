@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { ContentLayout, CardLayout } from "../shared/components/layouts";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
@@ -13,9 +13,12 @@ import { Calendar } from "primereact/calendar";
 import Papa from "papaparse";
 import { saveAs } from "file-saver";
 import { Toast } from "primereact/toast";
+import { useNavigate } from "react-router-dom";
+import { UserAuthContext } from "../context/UserAuthContext";
 
 const Readings = () => {
   const date = moment(new Date()).format(`YYYY-MM-DD`);
+  const navigate = useNavigate();
   const [readings, setReadings] = useState([]);
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
@@ -26,17 +29,37 @@ const Readings = () => {
   const [loading, setLoading] = useState(false);
   let networkTimeout = null;
   const toast = useRef(null);
+  const { config } = useContext(UserAuthContext);
 
   const fetchData = () => {
     setLoading(true);
     if (networkTimeout) clearTimeout(networkTimeout);
     networkTimeout = setTimeout(() => {
-      ReadingService.getReadings(search, page, limit, _dateFrom, _dateTo)
+      ReadingService.getReadings(
+        search,
+        page,
+        limit,
+        _dateFrom,
+        _dateTo,
+        config.current,
+      )
         .then((res) => {
           setTotalrecord(res.totalCount);
           setReadings(res.data);
         })
-        .catch((err) => console.error(err));
+        .catch((err) => {
+          console.log("Readings:", err);
+          if (!err.valid_token) {
+            toast.current.show({
+              severity: "error",
+              summary: "Invalid/Expired token",
+              detail: err.message,
+            });
+            setTimeout(() => {
+              navigate("/login");
+            }, 1000);
+          }
+        });
       setLoading(false);
     }, Math.random() * 1000 + 250);
   };
@@ -163,7 +186,14 @@ const Readings = () => {
   const exportCSV = () => {
     try {
       setLoading(true);
-      ReadingService.getReadings(search, 0, totalRecords, _dateFrom, _dateTo)
+      ReadingService.getReadings(
+        search,
+        0,
+        totalRecords,
+        _dateFrom,
+        _dateTo,
+        config.current,
+      )
         .then((res) => {
           const blob = new Blob([Papa.unparse(res.data)], {
             type: "text/csv;charset=utf-8",
@@ -172,6 +202,14 @@ const Readings = () => {
           setLoading(false);
         })
         .catch((err) => {
+          if (!err.valid_token) {
+            toast.current.show({
+              severity: "warn",
+              summary: "Unauthorized",
+              detail: err.message,
+            });
+            setTimeout(() => navigate("/login"), 1000);
+          }
           toast.current.show({
             severity: "error",
             summary: "Error",

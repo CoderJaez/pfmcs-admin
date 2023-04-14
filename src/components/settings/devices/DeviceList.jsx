@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { CardLayout, FormLayout } from "../../../shared/components/layouts";
@@ -12,7 +12,8 @@ import { DeviceService } from "../../../service/deviceService";
 import { InputText } from "primereact/inputtext";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
-
+import { UserAuthContext } from "../../../context/UserAuthContext";
+import { UserService } from "../../../service/userService";
 const DeviceList = () => {
   const toast = useRef(null);
   const [_device, _setDevice] = useState({});
@@ -20,13 +21,25 @@ const DeviceList = () => {
   const [loading, setLoading] = useState(true);
   const [deviceDialog, setDeviceDialog] = useState(false);
   const [search, setSearch] = useState("");
+  const { config } = useContext(UserAuthContext);
   const navigate = useNavigate();
 
   const fetchData = async () => {
     setLoading(true);
-    await DeviceService.getData(null, search)
+
+    await DeviceService.getData(null, search, config.current)
       .then((data) => setData(data))
-      .catch((err) => console.error("Error:", err));
+      .catch((err) => {
+        console.error("Device error:", err);
+        if (!err.valid_token) {
+          toast.current.show({
+            severity: "warn",
+            summary: "Unauthorized",
+            detail: err.message,
+          });
+          setTimeout(() => navigate("/login"), 1000);
+        }
+      });
   };
 
   useEffect(() => {
@@ -36,7 +49,7 @@ const DeviceList = () => {
   const onSubmit = async (values, actions) => {
     if (_device._id) {
       const updateDevice = { ..._device, ...values };
-      await DeviceService.updateData(updateDevice)
+      await DeviceService.updateData(updateDevice, config.current)
         .then((res) => {
           if (res.success) {
             toast.current.show({
@@ -61,30 +74,44 @@ const DeviceList = () => {
           }
         })
         .catch((err) => {
-          const status = err.status;
-          if (status >= 201) {
-            const errResponse = err.data;
-            console.error("Error Code 400:  ", errResponse);
+          if (!err.valid_token) {
+            toast.current.show({
+              severity: "warn",
+              summary: "Unauthorized",
+              detail: err.message,
+            });
+            setTimeout(() => navigate("/login"), 1000);
           }
         });
     } else {
-      await DeviceService.postData(values).then((res) => {
-        if (res.success) {
-          toast.current.show({
-            severity: "success",
-            summary: "Success",
-            detail: res.message,
-          });
-          actions.resetForm();
-          setData([...data, res.data]);
-        } else {
-          res.ErrorMessage.forEach((e) => {
-            const field = e.field;
-            const message = e.message;
-            setFieldError(field, message);
-          });
-        }
-      });
+      await DeviceService.postData(values, config.current)
+        .then((res) => {
+          if (res.success) {
+            toast.current.show({
+              severity: "success",
+              summary: "Success",
+              detail: res.message,
+            });
+            actions.resetForm();
+            setData([...data, res.data]);
+          } else {
+            res.ErrorMessage.forEach((e) => {
+              const field = e.field;
+              const message = e.message;
+              setFieldError(field, message);
+            });
+          }
+        })
+        .catch((err) => {
+          if (!err.valid_token) {
+            toast.current.show({
+              severity: "warn",
+              summary: "Unauthorized",
+              detail: err.message,
+            });
+            setTimeout(() => navigate("/login"), 1000);
+          }
+        });
     }
   };
 
@@ -144,14 +171,13 @@ const DeviceList = () => {
           }
         })
         .catch((err) => {
-          console.log(err.response.status);
-          const status = err.response.status;
-          if (status >= 400) {
+          if (!err.valid_token) {
             toast.current.show({
-              severity: "error",
-              summary: "Error",
+              severity: "warn",
+              summary: "Unauthorized",
               detail: err.message,
             });
+            setTimeout(() => navigate("/login"), 1000);
           }
         });
     };

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Button } from "primereact/button";
@@ -10,6 +10,7 @@ import { InputText } from "primereact/inputtext";
 import { Toast } from "primereact/toast";
 import { Paginator } from "primereact/paginator";
 import { Dropdown } from "primereact/dropdown";
+import { UserAuthContext } from "../context/UserAuthContext";
 import { saveAs } from "file-saver";
 import { CSVLink } from "react-csv";
 import Papa from "papaparse";
@@ -26,6 +27,8 @@ const ReadingsRealtimeData = () => {
   const [readings, setReadings] = useState([]);
   const [loading, setLoading] = useState(false);
   const [csvRecords, setCsvRecords] = useState([]);
+  const { config } = useContext(UserAuthContext);
+
   const toast = useRef(null);
   const dt = useRef(null);
   let networkTimeout = null;
@@ -34,19 +37,34 @@ const ReadingsRealtimeData = () => {
     setLoading(true);
     if (networkTimeout) clearTimeout(networkTimeout);
     networkTimeout = setTimeout(() => {
-      ReadingService.getRealtimeReadings(search, page, limit, dateFrom, dateTo)
+      ReadingService.getRealtimeReadings(
+        search,
+        page,
+        limit,
+        dateFrom,
+        dateTo,
+        config.current,
+      )
         .then((res) => {
           setLoading(false);
           setTotalrecord(res.totalCount);
           setReadings(res.data);
         })
-        .catch((err) =>
+        .catch((err) => {
+          if (!err.valid_token) {
+            toast.current.show({
+              severity: "warn",
+              summary: "Unauthorized",
+              detail: err.message,
+            });
+            setTimeout(() => navigate("/login"), 1000);
+          }
           toast.current.show({
             severity: "error",
             summary: "Error",
             detail: err.message,
-          }),
-        );
+          });
+        });
     }, Math.random() * 1000 + 250);
   };
   const onPageChange = (event) => {
@@ -170,6 +188,14 @@ const ReadingsRealtimeData = () => {
           setLoading(false);
         })
         .catch((err) => {
+          if (!err.valid_token) {
+            toast.current.show({
+              severity: "warn",
+              summary: "Unauthorized",
+              detail: err.message,
+            });
+            setTimeout(() => navigate("/login"), 1000);
+          }
           toast.current.show({
             severity: "error",
             summary: "Error",

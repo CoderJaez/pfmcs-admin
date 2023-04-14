@@ -1,6 +1,7 @@
 import React from "react";
 
 const FormLayout = ({
+  size,
   title,
   footer,
   header_style,
@@ -11,7 +12,7 @@ const FormLayout = ({
   return (
     <div>
       {/* Main content */}
-      <section className="content">
+      <section className="content" style={{ width: size }}>
         {/* Default box */}
         <div className={`card ${header_style}`}>
           <div className="card-header">

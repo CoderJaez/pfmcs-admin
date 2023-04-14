@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { CardLayout } from "../../../shared/components/layouts";
 import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
 import { DataTable } from "primereact/datatable";
@@ -9,26 +9,33 @@ import { Button } from "primereact/button";
 import { useNavigate } from "react-router-dom";
 import { ParamsThresholdService } from "../../../service/thresholdService";
 import { Toast } from "primereact/toast";
+import { UserAuthContext } from "../../../context/UserAuthContext";
 
 const ParamsThresholdList = () => {
   const navigate = useNavigate();
   const [thresholds, setThresholds] = useState([]);
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
+  const { config } = useContext(UserAuthContext);
   const toast = useRef(null);
 
   const fetchData = async () => {
     setLoading(true);
-    await ParamsThresholdService.getThreshold(null, search)
+    await ParamsThresholdService.getThreshold(null, search, config.current)
       .then((res) => {
         setThresholds(res);
       })
       .catch((err) => {
-        toast.current.show({
-          severity: "error",
-          summary: "Errorr",
-          detail: err.message,
-        });
+        if (err.valid_token) {
+          toast.current.show({
+            severity: "error",
+            summary: "Error!",
+            detail: err.message,
+          });
+          setTimeout(() => {
+            navigate("/login");
+          }, 500);
+        }
       });
   };
 
@@ -70,7 +77,6 @@ const ParamsThresholdList = () => {
           style={{
             minWidth: "5rem",
             minHeight: "2.3rem",
-            padding: "3.rem",
             backgroundColor: `#${rowData.color}`,
             color: "#ffff",
             padding: ".5rem",
@@ -84,7 +90,6 @@ const ParamsThresholdList = () => {
   };
 
   const routeThreshold = (rowData) => {
-    console.log(rowData);
     navigate(`/settings/parameter-thresholds/${rowData.value._id}`);
   };
 
@@ -113,7 +118,7 @@ const ParamsThresholdList = () => {
 
   const deleteThreshold = (rowData) => {
     const accept = async () => {
-      await ParamsThresholdService.deleteThreshold(rowData._id)
+      await ParamsThresholdService.deleteThreshold(rowData._id, config.current)
         .then((res) => {
           if (res.success) {
             toast.current.show({

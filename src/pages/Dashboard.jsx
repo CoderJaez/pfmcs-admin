@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useContext } from "react";
 import { ContentLayout, CardLayout } from "../shared/components/layouts";
-
+import { UserService } from "../service/userService";
 import DeviceList from "../components/devices/DeviceList";
+import { UserAuthContext } from "../context/UserAuthContext";
+
 import {
   HumSummary,
   TempSummary,
@@ -14,6 +16,12 @@ moment.tz.setDefault("Asia/Manila");
 
 const Dashboard = () => {
   const date = moment(new Date()).format(`MMMM YYYY`);
+  const { config, toggleToken } = useContext(UserAuthContext);
+
+  useEffect(() => {
+    toggleToken();
+    // checkAccessToken();
+  }, []);
   return (
     <>
       <ContentLayout contentTitle="Dashboard">

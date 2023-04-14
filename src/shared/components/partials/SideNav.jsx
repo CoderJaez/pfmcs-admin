@@ -1,8 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import profilePic from "../../../assets/ferlyn_calanda.png";
+import { UserAuthContext } from "../../../context/UserAuthContext";
+import { Avatar } from "primereact/avatar";
+
+import "primeicons/primeicons.css";
+
 const SideNav = React.memo(() => {
   const [urlPath, setUrlPath] = useState("");
+  const { user, userRef, logout } = useContext(UserAuthContext);
 
   useEffect(() => {
     const paths = window.location.pathname.split("/");
@@ -30,12 +36,21 @@ const SideNav = React.memo(() => {
           {/* Sidebar user panel (optional) */}
           <div className="user-panel mt-3 pb-3 mb-3 d-flex">
             <div className="image">
-              <img src={profilePic} className="img-circle" alt="User Image" />
+              {userRef && userRef.current?.image ? (
+                <img src={profilePic} className="img-circle" alt="User Image" />
+              ) : (
+                <Avatar
+                  label={`${userRef.current?.firstname[0]}${userRef.current?.lastname[0]}`}
+                  size="small"
+                  style={{ backgroundColor: "#2196F3", color: "#ffffff" }}
+                  shape="circle"
+                />
+              )}
             </div>
-            {/* <Avatar label="P" size="xlarge" shape="circle" /> */}
+
             <div className="info">
               <a href="#" className="d-block">
-                Ferlyn P. Calanda
+                {`${userRef.current?.firstname} ${userRef.current?.lastname}`}
               </a>
             </div>
           </div>
@@ -88,44 +103,72 @@ const SideNav = React.memo(() => {
                 </Link>
               </li>
 
-              <li className="nav-header">Settings</li>
-              <li className="nav-item">
-                <Link
-                  to="settings/devices"
-                  className={`nav-link ${
-                    urlPath === "devices" ? "active" : ""
-                  }`}
-                  onClick={() => setUrlPath("devices")}
-                >
-                  <i className="nav-icon fas fa-device" />
-                  <p>Devices</p>
-                </Link>
-              </li>
+              {userRef.current?.roles === "ADMIN" ? (
+                <>
+                  <li className="nav-header">Settings</li>
+                  <li className="nav-item">
+                    <Link
+                      to="settings/devices"
+                      className={`nav-link ${
+                        urlPath === "devices" ? "active" : ""
+                      }`}
+                      onClick={() => setUrlPath("devices")}
+                    >
+                      <i className="nav-icon fas fa-device" />
+                      <p>Devices</p>
+                    </Link>
+                  </li>
+
+                  <li className="nav-item">
+                    <Link
+                      to="settings/remarks"
+                      className={`nav-link ${
+                        urlPath === "remarks" ? "active" : ""
+                      }`}
+                      onClick={() => setUrlPath("remarks")}
+                    >
+                      <i className="nav-icon fas fa-device" />
+                      <p>Remarks</p>
+                    </Link>
+                  </li>
+
+                  <li className="nav-item">
+                    <Link
+                      to="settings/parameter-thresholds"
+                      className={`nav-link ${
+                        urlPath === "parameter-thresholds" ? "active" : ""
+                      }`}
+                      onClick={() => setUrlPath("parameter-thresholds")}
+                    >
+                      <i className="nav-icon fas fa-device" />
+                      <p>Parameter threshold</p>
+                    </Link>
+                  </li>
+
+                  <li className="nav-item">
+                    <Link
+                      to="settings/users"
+                      className={`nav-link ${
+                        urlPath === "users" ? "active" : ""
+                      }`}
+                      onClick={() => setUrlPath("user")}
+                    >
+                      <i className="nav-icon fas fa-device" />
+                      <p>User accounts</p>
+                    </Link>
+                  </li>
+                </>
+              ) : null}
 
               <li className="nav-item">
-                <Link
-                  to="settings/remarks"
-                  className={`nav-link ${
-                    urlPath === "remarks" ? "active" : ""
-                  }`}
-                  onClick={() => setUrlPath("remarks")}
+                <span
+                  className="nav-link"
+                  onClick={() => logout()}
+                  style={{ color: "#b8bcc5" }}
                 >
-                  <i className="nav-icon fas fa-device" />
-                  <p>Remarks</p>
-                </Link>
-              </li>
-
-              <li className="nav-item">
-                <Link
-                  to="settings/parameter-thresholds"
-                  className={`nav-link ${
-                    urlPath === "parameter-thresholds" ? "active" : ""
-                  }`}
-                  onClick={() => setUrlPath("parameter-thresholds")}
-                >
-                  <i className="nav-icon fas fa-device" />
-                  <p>Parameter threshold</p>
-                </Link>
+                  <i className="pi pi-sign-out" style={{ padding: ".5rem" }} />
+                  <p>Logout</p>
+                </span>
               </li>
             </ul>
           </nav>

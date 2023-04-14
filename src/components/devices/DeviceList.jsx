@@ -1,15 +1,15 @@
 import axios from "axios";
 import { Knob } from "primereact/knob";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { CardLayout } from "../../shared/components/layouts";
 import { url } from "../../constants/env";
 import Device from "./Device";
-
+import { UserAuthContext } from "../../context/UserAuthContext";
 const DeviceList = () => {
   const [devices, setDevices] = useState([]);
-
+  const { config } = useContext(UserAuthContext);
   const fetchData = async () => {
-    const response = await axios(`${url}devices`);
+    const response = await axios(`${url}summaries/devices`, config.current);
     if (response.data) {
       const tempDevices = response.data;
       if (tempDevices) {

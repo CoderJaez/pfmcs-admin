@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useContext } from "react";
 import { CardLayout, ContentLayout } from "../../../shared/components/layouts";
 import { DataTable } from "primereact/datatable";
 import { confirmDialog, ConfirmDialog } from "primereact/confirmdialog";
@@ -11,6 +11,7 @@ import { Dialog } from "primereact/dialog";
 import { DataStreamService } from "../../../service/dataStreamService";
 import { DeviceService } from "../../../service/deviceService";
 import { useParams, useNavigate } from "react-router-dom";
+import { UserAuthContext } from "../../../context/UserAuthContext";
 
 const DeviceCard = () => {
   const [showDSDialog, setShowDSDialog] = useState(false);
@@ -19,20 +20,30 @@ const DeviceCard = () => {
   const toast = useRef(null);
   const { id } = useParams();
   const navigate = useNavigate();
+  const { logout, toggleToken, config } = useContext(UserAuthContext);
 
   /////////////////////
   //  EVENT HANDLER //
   ///////////////////
   const fetchData = async () => {
-    DeviceService.getData(id)
+    DeviceService.getData(id, "", config.current)
       .then((data) => {
         setDevice(data[0]);
       })
       .catch((err) => {
+        if (!err.valid_token) {
+          toast.current.show({
+            severity: "warn",
+            summary: "Unauthorized",
+            detail: err.message,
+          });
+          setTimeout(() => logout, 500);
+        }
         console.error(err);
       });
   };
   useEffect(() => {
+    toggleToken();
     fetchData();
   }, []);
 

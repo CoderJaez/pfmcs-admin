@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { Toolbar } from "primereact/toolbar";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
@@ -11,15 +11,15 @@ import { useFormik } from "formik";
 import { confirmDialog, ConfirmDialog } from "primereact/confirmdialog";
 import { ContentLayout, CardLayout } from "../../shared/components/layouts";
 import { Toast } from "primereact/toast";
-
+import { UserAuthContext } from "../../context/UserAuthContext";
 const Remarks = () => {
   const [remark, setRemark] = useState({});
   const [remarks, setRemarks] = useState([]);
   const [search, setSearch] = useState("");
   const toast = useRef(null);
-
+  const { config } = useContext(UserAuthContext);
   const fetchData = async () => {
-    await RemmarkService.getRemarks(search)
+    await RemmarkService.getRemarks(search, config.current)
       .then((data) => {
         setRemarks(data);
       })
@@ -51,7 +51,7 @@ const Remarks = () => {
 
   const deleteRemark = (rowData) => {
     const accept = async () => {
-      await RemmarkService.deleteRemark(rowData._id)
+      await RemmarkService.deleteRemark(rowData._id, config.current)
         .then((res) => {
           toast.current.show({
             severity: "success",
@@ -108,7 +108,7 @@ const Remarks = () => {
   const onSubmit = async (values, actions) => {
     if (remark._id) {
       const updateRemark = { ...remark, ...values };
-      await RemmarkService.putRemark(updateRemark)
+      await RemmarkService.putRemark(updateRemark, config.current)
         .then((res) => {
           toast.current.show({
             severity: "success",
@@ -126,7 +126,7 @@ const Remarks = () => {
         })
         .catch((err) => console.error("Error:", err));
     } else {
-      await RemmarkService.insertRemark(values).then((res) => {
+      await RemmarkService.insertRemark(values, config.current).then((res) => {
         toast.current.show({
           severity: "success",
           summary: "Success",

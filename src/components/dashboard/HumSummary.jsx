@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import LineChart from "../charts/LineChart";
 import { url } from "../../constants/env";
+import { UserAuthContext } from "../../context/UserAuthContext";
+
 const HumSummary = () => {
   const [chartData, setChartData] = useState({});
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useRef, useMemo } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import axios from "axios";
 import { Knob } from "primereact/knob";
 import { url } from "../../constants/env";
@@ -7,6 +7,7 @@ import { ThresholdContext } from "../../context/thresholdContext";
 import { OverlayPanel } from "primereact/overlaypanel";
 import { Avatar } from "primereact/avatar";
 import { Badge } from "primereact/badge";
+import { UserAuthContext } from "../../context/UserAuthContext";
 moment.tz.setDefault("Asia/Manila");
 
 const MyKnob = ({ name, deviceId, vpin, sensor_type }) => {
@@ -14,6 +15,7 @@ const MyKnob = ({ name, deviceId, vpin, sensor_type }) => {
   const getThreshold = useContext(ThresholdContext);
   const [color, setColor] = useState("#19A7CE");
   const [threshold, setThreshold] = useState(null);
+  const { config } = useContext(UserAuthContext);
 
   const op = useRef(null);
   const containerRef = useRef(null);
@@ -25,25 +27,24 @@ const MyKnob = ({ name, deviceId, vpin, sensor_type }) => {
 
   const fetchData = async () => {
     try {
-      axios({
-        method: "get",
-        url: `${url}temp-readings/?device_id=${deviceId}&limit=1&vpin=${vpin}`,
-      }).then(function (response) {
-        const data = response.data;
-        if (data[0] !== undefined) {
-          const createdAt = moment(data.createdAt);
-          const currentDate = moment(new Date());
-          const value = data[0].value;
+      axios
+        .get(`${url}temp-readings/?device_id=${deviceId}&limit=1&vpin=${vpin}`)
+        .then(function (response) {
+          const data = response.data;
+          if (data[0] !== undefined) {
+            const createdAt = moment(data.createdAt);
+            const currentDate = moment(new Date());
+            const value = data[0].value;
 
-          if (currentDate >= createdAt) setSensor(value);
-          const _threshold = getThreshold(sensor_type, value);
-          if (_threshold) {
-            setThreshold(_threshold);
-            const container = containerRef.current;
-            if (container) container.innerHTML = _threshold.recommendation;
+            if (currentDate >= createdAt) setSensor(value);
+            const _threshold = getThreshold(sensor_type, value);
+            if (_threshold) {
+              setThreshold(_threshold);
+              const container = containerRef.current;
+              if (container) container.innerHTML = _threshold.recommendation;
+            }
           }
-        }
-      });
+        });
     } catch (error) {
       console.error("Error Knob:", error.message);
     }

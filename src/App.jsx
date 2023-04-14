@@ -18,7 +18,6 @@ const App = () => {
   const navigate = useNavigate();
   useEffect(() => {
     const token = sessionStorage.getItem("token");
-    console.log("App rendered.");
     if (!token) {
       navigate("/login");
     }

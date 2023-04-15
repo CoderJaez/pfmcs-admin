@@ -1,0 +1,8 @@
+.recommendation {
+    margin-top:1.5rem;
+}
+
+.recommendation >  p {
+    padding: 0;
+    margin:0;
+}

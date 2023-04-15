@@ -7,6 +7,7 @@ import ReadingsRealtimeData from "./ReadingsRealtimeData";
 import Login from "./Login";
 import DataEntry from "./DataEntry";
 import User from "./Settings/User";
+import Recommendation from "./Settings/Recommendation";
 export {
   Login,
   Dashboard,
@@ -17,4 +18,5 @@ export {
   ReadingsRealtimeData,
   DataEntry,
   User,
+  Recommendation,
 };

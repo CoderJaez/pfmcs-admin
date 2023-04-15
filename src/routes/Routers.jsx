@@ -9,6 +9,7 @@ import {
   ReadingsRealtimeData,
   Login,
   User,
+  Recommendation,
 } from "../pages";
 import AdminLayout from "../shared/components/layouts/AdminLayout";
 import { DeviceCard } from "../components/settings/devices";
@@ -42,9 +43,14 @@ const Routers = () => {
               element={<ParamsThresholdCard />}
             />
           </Route>
+
           <Route path="/settings/users" element={<User />} />
           <Route path="/settings/users-new" element={<UserCard />} />
           <Route path="/settings/users-update/:id" element={<UserCard />} />
+          <Route
+            path="/settings/recommendation-intervals"
+            element={<Recommendation />}
+          />
           <Route
             path="/settings/devices/:id/data-streams"
             element={<DeviceCard />}

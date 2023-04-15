@@ -9,6 +9,7 @@ import {
   TempSummary,
   Nh3Summary,
   ReadingsSummary,
+  Recommendations,
 } from "../components/dashboard";
 
 import moment from "moment-timezone";
@@ -25,6 +26,7 @@ const Dashboard = () => {
   return (
     <>
       <ContentLayout contentTitle="Dashboard">
+        <Recommendations />
         <DeviceList />
         <CardLayout title={`Daily readings for ${date}`}>
           <div className="row">

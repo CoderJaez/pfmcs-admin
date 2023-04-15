@@ -28,13 +28,13 @@ const MyKnob = ({ name, deviceId, vpin, sensor_type }) => {
   const fetchData = async () => {
     try {
       axios
-        .get(`${url}temp-readings/?device_id=${deviceId}&limit=1&vpin=${vpin}`)
+        .get(`${url}temp-readings/?device_id=${deviceId}&vpin=${vpin}`)
         .then(function (response) {
           const data = response.data;
-          if (data[0] !== undefined) {
+          if (data !== undefined) {
             const createdAt = moment(data.createdAt);
             const currentDate = moment(new Date());
-            const value = data[0].value;
+            const value = data.value;
 
             if (currentDate >= createdAt) setSensor(value);
             const _threshold = getThreshold(sensor_type, value);
@@ -66,6 +66,8 @@ const MyKnob = ({ name, deviceId, vpin, sensor_type }) => {
         valueTemplate={"{value}"}
         valueColor={threshold ? `#${threshold.color} ` : color}
         rangeColor="#708090"
+        min={0}
+        max={300}
       />
       <p>{name}</p>
       {threshold ? (

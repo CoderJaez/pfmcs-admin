@@ -157,6 +157,18 @@ const SideNav = React.memo(() => {
                       <p>User accounts</p>
                     </Link>
                   </li>
+                  <li className="nav-item">
+                    <Link
+                      to="settings/recommendation-intervals"
+                      className={`nav-link ${
+                        urlPath === "recommendation-intervals" ? "active" : ""
+                      }`}
+                      onClick={() => setUrlPath("recommendation-intervals")}
+                    >
+                      <i className="nav-icon fas fa-device" />
+                      <p>Recommendation</p>
+                    </Link>
+                  </li>
                 </>
               ) : null}
 

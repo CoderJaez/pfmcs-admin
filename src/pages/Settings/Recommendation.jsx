@@ -12,13 +12,13 @@ import { RecommendationInterval } from "../../service/recommendationInterval";
 import { useFormik } from "formik";
 const Recommendation = () => {
   const [edit, setEdit] = useState(false);
-  const [recommendation, setRecommendation] = useState({});
+  const [recommendation, setRecommendation] = useState(null);
   const { config, toggleToken } = useContext(UserAuthContext);
   const { intervalRef } = useContext(ThresholdContext);
   const toast = useRef(null);
 
   const fetchData = async () => {
-    await RecommendationInterval.FindRecommendation()
+    await RecommendationInterval.FindRecommendation(config.current)
       .then((data) => {
         setRecommendation(data);
       })

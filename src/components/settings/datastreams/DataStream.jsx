@@ -65,7 +65,7 @@ const DataStream = ({
             });
           }
         })
-        .catch((err) => console.error(err));
+        .catch((err) => console.error(err.message));
     }
   };
   const {

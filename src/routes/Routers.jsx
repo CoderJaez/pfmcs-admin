@@ -10,6 +10,7 @@ import {
   Login,
   User,
   Recommendation,
+  CriteriaAssessment,
 } from "../pages";
 import AdminLayout from "../shared/components/layouts/AdminLayout";
 import { DeviceCard } from "../components/settings/devices";
@@ -17,10 +18,8 @@ import ParamsThresholdLayout from "../components/layouts/ParamsThreholdLayout";
 import { ParamsThresholdCard } from "../components/settings/thresholds";
 import UserCard from "../components/settings/users/UserCard";
 import Error404 from "../pages/Error404";
-import { UserAuthContext } from "../context/UserAuthContext";
+import CriteriaAssessmentCard from "../components/settings/criteria_assessments/CriteriaAssessmentCard";
 const Routers = () => {
-  const { toggleToken, userRef, logout } = useContext(UserAuthContext);
-
   return (
     <>
       <Routes>
@@ -47,6 +46,19 @@ const Routers = () => {
           <Route path="/settings/users" element={<User />} />
           <Route path="/settings/users-new" element={<UserCard />} />
           <Route path="/settings/users-update/:id" element={<UserCard />} />
+          <Route
+            path="/settings/multi-criteria-assesments"
+            element={<CriteriaAssessment />}
+          />
+          <Route
+            path="/settings/multi-criteria-assesments-details/:id"
+            element={<CriteriaAssessmentCard />}
+          />
+
+          <Route
+            path="/settings/multi-criteria-assesments-details/"
+            element={<CriteriaAssessmentCard />}
+          />
           <Route
             path="/settings/recommendation-intervals"
             element={<Recommendation />}

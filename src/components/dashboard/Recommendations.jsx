@@ -27,26 +27,26 @@ const Recommendations = () => {
   };
   let intervalId2;
 
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      console.log(intervalRef.current);
-    }, 1000);
+  // useEffect(() => {
+  //   const intervalId = setInterval(() => {
+  //     console.log(intervalRef.current);
+  //   }, 1000);
 
-    setTimeout(() => {
-      if (intervalRef.current) {
-        // console.log("Clearing interval");
-        clearInterval(intervalId);
-        intervalId2 = setInterval(() => {
-          // console.log("Interval:", intervalRef.current);
-          fetchRecommendation();
-        }, intervalRef.current);
-      }
-    }, 3000);
+  //   setTimeout(() => {
+  //     if (intervalRef.current) {
+  //       // console.log("Clearing interval");
+  //       clearInterval(intervalId);
+  //       intervalId2 = setInterval(() => {
+  //         // console.log("Interval:", intervalRef.current);
+  //         fetchRecommendation();
+  //       }, intervalRef.current);
+  //     }
+  //   }, 3000);
 
-    return () => {
-      clearInterval(intervalId2);
-    };
-  }, []);
+  //   return () => {
+  //     clearInterval(intervalId2);
+  //   };
+  // }, []);
 
   return (
     <CardLayout

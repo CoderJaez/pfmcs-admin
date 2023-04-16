@@ -8,8 +8,8 @@ import React, {
 import { ParamsThresholdService } from "../service/thresholdService";
 import { UserAuthContext } from "./UserAuthContext";
 import { RecommendationInterval } from "../service/recommendationInterval";
-export const ThresholdContext = createContext();
 import { useNavigate } from "react-router-dom";
+export const ThresholdContext = createContext();
 
 export const ThresholdProvider = ({ children }) => {
   const { config, toggleToken } = useContext(UserAuthContext);
@@ -32,7 +32,7 @@ export const ThresholdProvider = ({ children }) => {
       .catch((err) => {
         console.log("Error", err);
       });
-    fetchInterval();
+    // fetchInterval();
   }, []);
 
   function getThreshold(category, value) {

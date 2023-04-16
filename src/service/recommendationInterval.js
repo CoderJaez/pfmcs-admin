@@ -5,7 +5,7 @@ export const RecommendationInterval = {
   FindRecommendation: async (config) => {
     return await new Promise((resolve, reject) => {
       axios
-        .get(`${url}recommendations`, config)
+        .get(`${url}rec-intervals`, config)
         .then((res) => resolve(res.data))
         .catch((err) => reject(err.response.data));
     });
@@ -13,7 +13,7 @@ export const RecommendationInterval = {
   NewRecommendation: async (values, config) => {
     return await new Promise((resolve, reject) => {
       axios
-        .post(`${url}recommendations`, values, config)
+        .post(`${url}rec-intervals`, values, config)
         .then((res) => resolve(res.data))
         .catch((err) => reject(err.response.data));
     });
@@ -21,7 +21,7 @@ export const RecommendationInterval = {
   UpdateRecommendation: async (values, config) => {
     return await new Promise((resolve, reject) => {
       axios
-        .put(`${url}recommendations/${values._id}`, values, config)
+        .put(`${url}rec-intervals/${values._id}`, values, config)
         .then((res) => resolve(res.data))
         .catch((err) => reject(err.response.data));
     });

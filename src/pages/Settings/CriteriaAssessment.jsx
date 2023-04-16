@@ -209,8 +209,8 @@ const CriteriaAssessment = () => {
   };
 
   return (
-    <ContentLayout contentTitle="Multi Criteria Assesment Settings">
-      <CardLayout header_style="card-primary" title="Assesment List">
+    <ContentLayout contentTitle="Multi Criteria Assessment Settings">
+      <CardLayout header_style="card-primary" title="Assessment List">
         <Toolbar left={searchToolbar} right={actionToolbar} />
         <Toast ref={toast} />
         <ConfirmDialog />

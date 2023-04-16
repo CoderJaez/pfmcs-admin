@@ -4,12 +4,12 @@ export const DataStreamService = {
   postData: async (data, config) => {
     return await new Promise((resolve, reject) => {
       axios
-        .post(`${url}data-streams`, data, config)
+        .post(`${url}data-streams/`, data, config)
         .then((res) => {
           resolve(res.data);
         })
         .catch((err) => {
-          reject(err.response);
+          reject(err.response.data);
         });
     });
   },
@@ -30,7 +30,7 @@ export const DataStreamService = {
       axios
         .get(`${url}data-streams/?device=${device_id}`, config)
         .then((res) => resolve(res.data))
-        .catch((err) => reject(err.response));
+        .catch((err) => reject(err.response.data));
     });
   },
   deleteData: async (id, config) => {
@@ -41,7 +41,7 @@ export const DataStreamService = {
           resolve(res.data);
         })
         .catch((err) => {
-          reject(err.response);
+          reject(err.response.data);
         });
     });
   },

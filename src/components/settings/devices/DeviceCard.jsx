@@ -60,7 +60,7 @@ const DeviceCard = () => {
 
   const deleteDatastream = (rowData) => {
     const accept = async () => {
-      await DataStreamService.deleteData(rowData._id)
+      await DataStreamService.deleteData(rowData._id, config.current)
         .then((res) => {
           toast.current.show({
             severity: "success",

@@ -32,7 +32,6 @@ const DataStream = ({
   const toast = useRef(null);
 
   const onSubmit = async (values, actions) => {
-    console.log(config.current);
     if (dataStream._id) {
       await DataStreamService.putData(values, dataStream._id, config.current)
         .then((res) => {

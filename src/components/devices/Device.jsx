@@ -2,6 +2,7 @@ import React from "react";
 import { CardLayout } from "../../shared/components/layouts";
 import { MyKnob, Switch } from "../widgets";
 const Device = ({ device, dataStreams }) => {
+  console.log(dataStreams);
   return (
     <>
       <div className="col-md-4 col-sm-6 col-xs-12">
@@ -21,6 +22,8 @@ const Device = ({ device, dataStreams }) => {
                     key={stream._id}
                     name={stream.name}
                     vpin={stream.vpin}
+                    min_value={stream.min_value}
+                    max_value={stream.max_value}
                     sensor_type={stream.sensor_type}
                     deviceId={device.deviceId}
                     forDemo={device.forDemo}

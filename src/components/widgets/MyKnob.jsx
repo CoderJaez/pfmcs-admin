@@ -14,6 +14,8 @@ const MyKnob = ({
   name,
   deviceId,
   vpin,
+  min_value,
+  max_value,
   sensor_type,
   forDemo,
   dataStreams,
@@ -106,8 +108,8 @@ const MyKnob = ({
         valueTemplate={"{value}"}
         valueColor={threshold ? `#${threshold.color} ` : color}
         rangeColor="#708090"
-        min={0}
-        max={300}
+        min={min_value}
+        max={max_value}
       />
       <p>{name}</p>
       {threshold ? (

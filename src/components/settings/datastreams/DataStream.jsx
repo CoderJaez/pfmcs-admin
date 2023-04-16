@@ -20,8 +20,8 @@ const DataStream = ({
       setFieldValue("vpin", dataStream.vpin);
       setFieldValue("type", dataStream.type);
       setFieldValue("sensor_type", dataStream.sensor_type);
-      setFieldValue("min_value", dataStream.max_value);
-      setFieldValue("max_vale", dataStream.max_value);
+      setFieldValue("min_value", dataStream.min_value);
+      setFieldValue("max_value", dataStream.max_value);
     }
   }, [dataStream.name]);
   let vpins = [];
@@ -238,7 +238,7 @@ const DataStream = ({
               id="min_value"
               name="min_value"
               value={values.min_value}
-              placeholder="Enter default value"
+              placeholder="Enter min value"
               onChange={handleChange}
               onBlur={handleBlur}
             />
@@ -259,7 +259,7 @@ const DataStream = ({
               id="max_value"
               name="max_value"
               value={values.max_value}
-              placeholder="Enter default value"
+              placeholder="Enter Max value"
               onChange={handleChange}
               onBlur={handleBlur}
             />

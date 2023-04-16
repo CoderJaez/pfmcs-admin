@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { useFormik } from "formik";
 import { Dialog } from "primereact/dialog";
 import { Button } from "primereact/button";
 import { DeviceStreamSchema } from "../../../validations/dataStream";
 import { DataStreamService } from "../../../service/dataStreamService";
 import { Toast } from "primereact/toast";
-
+import { UserAuthContext } from "../../../context/UserAuthContext";
 const DataStream = ({
   dataStream,
   showDialog,
@@ -13,13 +13,15 @@ const DataStream = ({
   deviceId,
   setDatastreams,
 }) => {
+  const { config } = useContext(UserAuthContext);
   useEffect(() => {
     if (dataStream.name) {
       setFieldValue("name", dataStream.name);
       setFieldValue("vpin", dataStream.vpin);
       setFieldValue("type", dataStream.type);
       setFieldValue("sensor_type", dataStream.sensor_type);
-      setFieldValue("default_value", dataStream.default_value);
+      setFieldValue("min_value", dataStream.max_value);
+      setFieldValue("max_vale", dataStream.max_value);
     }
   }, [dataStream.name]);
   let vpins = [];
@@ -30,8 +32,9 @@ const DataStream = ({
   const toast = useRef(null);
 
   const onSubmit = async (values, actions) => {
+    console.log(config.current);
     if (dataStream._id) {
-      await DataStreamService.putData(values, dataStream._id)
+      await DataStreamService.putData(values, dataStream._id, config.current)
         .then((res) => {
           if (res.success) {
             toast.current.show({
@@ -47,7 +50,7 @@ const DataStream = ({
         });
     } else {
       values["device"] = deviceId;
-      await DataStreamService.postData(values)
+      await DataStreamService.postData(values, config.current)
         .then((res) => {
           if (res.success) {
             toast.current.show({
@@ -83,7 +86,8 @@ const DataStream = ({
       vpin: "",
       type: "",
       sensor_type: "",
-      default_value: "",
+      min_value: "",
+      max_value: "",
     },
     validationSchema: DeviceStreamSchema,
     onSubmit,
@@ -223,22 +227,44 @@ const DataStream = ({
           </div>
 
           <div className="form-group">
-            <label htmlFor="default_value">Default value:</label>
+            <label htmlFor="default_value">Min value:</label>
             <input
               type="number"
               className={
-                errors.default_value && touched.default_value
+                errors.min_value && touched.min_value
                   ? "form-control is-invalid"
                   : "form-control"
               }
-              id="default_value"
-              value={values.default_value}
+              id="min_value"
+              name="min_value"
+              value={values.min_value}
               placeholder="Enter default value"
               onChange={handleChange}
               onBlur={handleBlur}
             />
-            {errors.default_value && touched.default_value && (
-              <p className="text-danger">{errors.default_value}</p>
+            {errors.min_value && touched.min_value && (
+              <p className="text-danger">{errors.min_value}</p>
+            )}
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="default_value">Max value:</label>
+            <input
+              type="number"
+              className={
+                errors.max_value && touched.max_value
+                  ? "form-control is-invalid"
+                  : "form-control"
+              }
+              id="max_value"
+              name="max_value"
+              value={values.max_value}
+              placeholder="Enter default value"
+              onChange={handleChange}
+              onBlur={handleBlur}
+            />
+            {errors.max_value && touched.max_value && (
+              <p className="text-danger">{errors.max_value}</p>
             )}
           </div>
           <DialogFooter />

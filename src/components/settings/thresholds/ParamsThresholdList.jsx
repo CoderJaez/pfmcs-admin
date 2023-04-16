@@ -16,7 +16,7 @@ const ParamsThresholdList = () => {
   const [thresholds, setThresholds] = useState([]);
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
-  const { config } = useContext(UserAuthContext);
+  const { config, toggleToken } = useContext(UserAuthContext);
   const toast = useRef(null);
 
   const fetchData = async () => {
@@ -40,6 +40,7 @@ const ParamsThresholdList = () => {
   };
 
   useEffect(() => {
+    toggleToken();
     fetchData();
   }, [search]);
   const actionToolbar = () => {

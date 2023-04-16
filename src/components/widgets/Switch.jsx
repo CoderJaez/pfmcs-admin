@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
 import axios from "axios";
-import { Knob } from "primereact/knob";
 import { url } from "../../constants/env";
 import moment from "moment-timezone";
 import { ThresholdContext } from "../../context/thresholdContext";
@@ -8,17 +7,11 @@ import { OverlayPanel } from "primereact/overlaypanel";
 import { Avatar } from "primereact/avatar";
 import { Badge } from "primereact/badge";
 import { UserAuthContext } from "../../context/UserAuthContext";
+import { InputSwitch } from "primereact/inputswitch";
 moment.tz.setDefault("Asia/Manila");
 
-const MyKnob = ({
-  name,
-  deviceId,
-  vpin,
-  sensor_type,
-  forDemo,
-  dataStreams,
-}) => {
-  const [sensor, setSensor] = useState(0);
+const Switch = ({ name, deviceId, vpin, sensor_type, forDemo }) => {
+  const [sensor, setSensor] = useState(false);
   const { getThreshold, thresholds } = useContext(ThresholdContext);
   const [color, setColor] = useState("#19A7CE");
   const [threshold, setThreshold] = useState(null);
@@ -31,58 +24,21 @@ const MyKnob = ({
     const div = document.getElementsByClassName("p-overlaypanel-content");
     div.innerHTML = str;
   };
-  const setVentilation = (value) => {
-    const _url = forDemo
-      ? `${url}temp-readings/demo?device_id=${deviceId}&vpin=${vpin}`
-      : `${url}temp-readings/?device_id=${deviceId}&vpin=${vpin}`;
-
-    try {
-      axios.post(_url, value);
-    } catch (error) {
-      console.error("Switch:", error.message);
-    }
-  };
 
   const fetchData = async () => {
     try {
       const _url = forDemo
-        ? `${url}temp-readings/demo?device_id=${deviceId}&vpin=${vpin}`
+        ? `${url}temp-readings/demo/?device_id=${deviceId}&vpin=${vpin}`
         : `${url}temp-readings/?device_id=${deviceId}&vpin=${vpin}`;
       axios.get(_url).then(function (response) {
         const data = response.data;
         if (data !== undefined) {
           const createdAt = moment(data.createdAt);
           const currentDate = moment(new Date());
-          const value = data.value;
-
+          const value = data.value === 1 ? true : false;
           if (currentDate >= createdAt) setSensor(value);
-          const _threshold = getThreshold(sensor_type, value);
-          if (_threshold) {
-            setThreshold(_threshold);
-            const container = containerRef.current;
-            if (container) container.innerHTML = _threshold.recommendation;
-            if (sensor_type === "Temperature") {
-              const _switch = dataStreams.find((d) => d.type === "switch");
-              if (_switch) {
-                if (
-                  _threshold.label === "HIGH" ||
-                  _threshold.label === "CRITICAL"
-                ) {
-                  setVentilation({
-                    device_id: deviceId,
-                    vpin: _switch.vpin,
-                    value: 1,
-                  });
-                } else {
-                  setVentilation({
-                    device_id: deviceId,
-                    vpin: _switch.vpin,
-                    value: 0,
-                  });
-                }
-              }
-            }
-          }
+          const container = containerRef.current;
+          if (container) container.innerHTML = _threshold.recommendation;
         }
       });
     } catch (error) {
@@ -101,14 +57,7 @@ const MyKnob = ({
   }, []);
   return (
     <div>
-      <Knob
-        value={sensor}
-        valueTemplate={"{value}"}
-        valueColor={threshold ? `#${threshold.color} ` : color}
-        rangeColor="#708090"
-        min={0}
-        max={300}
-      />
+      <InputSwitch checked={sensor} name={vpin} size="xlarge" />
       <p>{name}</p>
       {threshold ? (
         <>
@@ -131,4 +80,4 @@ const MyKnob = ({
   );
 };
 
-export default MyKnob;
+export default Switch;

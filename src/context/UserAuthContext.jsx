@@ -1,14 +1,10 @@
-import React, {
-  useState,
-  createContext,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-} from "react";
+import React, { useState, createContext, useEffect, useRef } from "react";
 import { key } from "../constants/env";
 import { UserService } from "../service/userService";
 import { useNavigate } from "react-router-dom";
 import jwtDecode from "jwt-decode";
+import { Toast } from "primereact/toast";
+
 export const UserAuthContext = createContext();
 
 export const UserAuthContextProvider = ({ children }) => {
@@ -16,7 +12,7 @@ export const UserAuthContextProvider = ({ children }) => {
   const config = useRef(null);
   const navigate = useNavigate();
   const userRef = useRef(null);
-
+  const toast = useRef(null);
   const checkToken = async () => {
     let token = sessionStorage.getItem("token");
     if (token) {
@@ -35,6 +31,25 @@ export const UserAuthContextProvider = ({ children }) => {
   useEffect(() => {
     checkToken();
   }, []);
+
+  // useEffect(() => {
+  //   const intervalId = setInterval(() => {
+  //     UserService.CheckToken().catch((err) => {
+  //       toast.current.show({
+  //         serverity: "warn",
+  //         summary: "Unauthorized",
+  //         detail: err.message,
+  //       });
+
+  //       setTimeout(() => {
+  //         logout();
+  //       }, 5000);
+  //     });
+  //     return () => {
+  //       clearInterval(intervalId);
+  //     };
+  //   }, 1000);
+  // });
 
   async function login(email, passwword) {
     let result;
@@ -73,6 +88,7 @@ export const UserAuthContextProvider = ({ children }) => {
     <UserAuthContext.Provider
       value={{ user, login, logout, config, userRef, toggleToken }}
     >
+      <Toast ref={toast} />
       {children}
     </UserAuthContext.Provider>
   );

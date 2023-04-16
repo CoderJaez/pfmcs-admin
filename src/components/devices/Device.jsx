@@ -1,6 +1,6 @@
 import React from "react";
 import { CardLayout } from "../../shared/components/layouts";
-import { MyKnob } from "../widgets";
+import { MyKnob, Switch } from "../widgets";
 const Device = ({ device, dataStreams }) => {
   return (
     <>
@@ -23,6 +23,19 @@ const Device = ({ device, dataStreams }) => {
                     vpin={stream.vpin}
                     sensor_type={stream.sensor_type}
                     deviceId={device.deviceId}
+                    forDemo={device.forDemo}
+                    dataStreams={dataStreams}
+                  />
+                );
+              } else {
+                return (
+                  <Switch
+                    key={stream._id}
+                    name={stream.name}
+                    vpin={stream.vpin}
+                    sensor_type={stream.sensor_type}
+                    deviceId={device.deviceId}
+                    forDemo={device.forDemo}
                   />
                 );
               }

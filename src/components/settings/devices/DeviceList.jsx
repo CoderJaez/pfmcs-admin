@@ -14,6 +14,7 @@ import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 import { UserAuthContext } from "../../../context/UserAuthContext";
 import { UserService } from "../../../service/userService";
+import { InputSwitch } from "primereact/inputswitch";
 const DeviceList = () => {
   const toast = useRef(null);
   const [_device, _setDevice] = useState({});
@@ -21,12 +22,11 @@ const DeviceList = () => {
   const [loading, setLoading] = useState(true);
   const [deviceDialog, setDeviceDialog] = useState(false);
   const [search, setSearch] = useState("");
-  const { config } = useContext(UserAuthContext);
+  const { config, logout, toggleToken } = useContext(UserAuthContext);
   const navigate = useNavigate();
 
   const fetchData = async () => {
     setLoading(true);
-
     await DeviceService.getData(null, search, config.current)
       .then((data) => setData(data))
       .catch((err) => {
@@ -43,6 +43,7 @@ const DeviceList = () => {
   };
 
   useEffect(() => {
+    toggleToken();
     fetchData();
   }, [search]);
 
@@ -80,7 +81,7 @@ const DeviceList = () => {
               summary: "Unauthorized",
               detail: err.message,
             });
-            setTimeout(() => navigate("/login"), 1000);
+            setTimeout(() => logout(), 1000);
           }
         });
     } else {
@@ -109,7 +110,7 @@ const DeviceList = () => {
               summary: "Unauthorized",
               detail: err.message,
             });
-            setTimeout(() => navigate("/login"), 1000);
+            setTimeout(() => logout(), 1000);
           }
         });
     }
@@ -129,6 +130,7 @@ const DeviceList = () => {
   } = useFormik({
     initialValues: {
       name: "",
+      forDemo: false,
     },
     validationSchema: DeviceSchema,
     onSubmit,
@@ -151,6 +153,8 @@ const DeviceList = () => {
   const editDevice = (rowData) => {
     _setDevice(rowData);
     setFieldValue("name", rowData.name);
+    setFieldValue("forDemo", rowData.forDemo);
+
     setDeviceDialog(true);
   };
 
@@ -177,7 +181,7 @@ const DeviceList = () => {
               summary: "Unauthorized",
               detail: err.message,
             });
-            setTimeout(() => navigate("/login"), 1000);
+            setTimeout(() => logout(), 1000);
           }
         });
     };
@@ -306,6 +310,15 @@ const DeviceList = () => {
                 {errors.name && touched.name && (
                   <p className="text-danger">{errors.name}</p>
                 )}
+              </div>
+
+              <div className="form-group">
+                <InputSwitch
+                  id="forDemo"
+                  name="forDemo"
+                  checked={values.forDemo}
+                  onChange={handleChange}
+                />
               </div>
             </FormLayout>
           ) : null}

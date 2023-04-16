@@ -17,16 +17,18 @@ const Remarks = () => {
   const [remarks, setRemarks] = useState([]);
   const [search, setSearch] = useState("");
   const toast = useRef(null);
-  const { config } = useContext(UserAuthContext);
+  const { config, toggleToken } = useContext(UserAuthContext);
+
   const fetchData = async () => {
     await RemmarkService.getRemarks(search, config.current)
       .then((data) => {
         setRemarks(data);
       })
-      .catch((err) => console.error(err));
+      .catch((err) => console.error("Remarks:", err));
   };
 
   useEffect(() => {
+    toggleToken();
     fetchData();
   }, [search]);
 

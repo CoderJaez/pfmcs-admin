@@ -1,10 +1,10 @@
 import { url } from "../constants/env";
 import axios from "axios";
 export const DataStreamService = {
-  postData: async (data) => {
+  postData: async (data, config) => {
     return await new Promise((resolve, reject) => {
       axios
-        .post(`${url}data-streams`, data)
+        .post(`${url}data-streams`, data, config)
         .then((res) => {
           resolve(res.data);
         })
@@ -13,10 +13,10 @@ export const DataStreamService = {
         });
     });
   },
-  putData: async (data, id) => {
+  putData: async (data, id, config) => {
     return await new Promise((resolve, reject) => {
       axios
-        .put(`${url}data-streams/${id}`, data)
+        .put(`${url}data-streams/${id}`, data, config)
         .then((res) => {
           resolve(res.data);
         })
@@ -25,18 +25,18 @@ export const DataStreamService = {
         });
     });
   },
-  getData: async (device_id) => {
+  getData: async (device_id, config) => {
     return await new Promise((resolve, reject) => {
       axios
-        .get(`${url}data-streams/?device=${device_id}`)
+        .get(`${url}data-streams/?device=${device_id}`, config)
         .then((res) => resolve(res.data))
         .catch((err) => reject(err.response));
     });
   },
-  deleteData: async (id) => {
+  deleteData: async (id, config) => {
     return await new Promise((resolve, reject) => {
       axios
-        .delete(`${url}data-streams/${id}`)
+        .delete(`${url}data-streams/${id}`, config)
         .then((res) => {
           resolve(res.data);
         })

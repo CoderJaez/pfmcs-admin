@@ -13,7 +13,7 @@ import { useFormik } from "formik";
 const Recommendation = () => {
   const [edit, setEdit] = useState(false);
   const [recommendation, setRecommendation] = useState({});
-  const { config } = useContext(UserAuthContext);
+  const { config, toggleToken } = useContext(UserAuthContext);
   const { intervalRef } = useContext(ThresholdContext);
   const toast = useRef(null);
 
@@ -26,6 +26,7 @@ const Recommendation = () => {
   };
 
   useEffect(() => {
+    toggleToken();
     fetchData();
   }, []);
 

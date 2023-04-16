@@ -1,3 +1,3 @@
 import MyKnob from "./MyKnob";
-
-export { MyKnob };
+import Switch from "./Switch";
+export { MyKnob, Switch };

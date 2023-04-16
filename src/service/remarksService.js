@@ -7,7 +7,7 @@ export const RemmarkService = {
       axios
         .get(`${url}remarks?search=${search}`, config)
         .then((res) => resolve(res.data))
-        .catch((err) => reject(err.response));
+        .catch((err) => reject(err.response.data));
     });
   },
   insertRemark: async (values, config) => {
@@ -15,7 +15,7 @@ export const RemmarkService = {
       axios
         .post(`${url}remarks`, values, config)
         .then((res) => resolve(res.data))
-        .catch((err) => reject(err.response));
+        .catch((err) => reject(err.response.data));
     });
   },
   putRemark: async (values, config) => {
@@ -23,7 +23,7 @@ export const RemmarkService = {
       axios
         .put(`${url}remarks/${values._id}`, values, config)
         .then((res) => resolve(res.data))
-        .catch((err) => reject(err.response));
+        .catch((err) => reject(err.response.data));
     });
   },
   deleteRemark: async (id, config) => {
@@ -31,7 +31,7 @@ export const RemmarkService = {
       axios
         .delete(`${url}remarks/${id}`, config)
         .then((res) => resolve(res.data))
-        .catch((err) => reject(err.response)),
+        .catch((err) => reject(err.response.data)),
     );
   },
 };

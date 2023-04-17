@@ -44,8 +44,8 @@ const Recommendations = () => {
           </p>
           <p>
             <strong>Time:</strong>{" "}
-            {moment(recommendation.dateFrom).format("HH:MM:SS a")} -{" "}
-            {moment(recommendation.dateTo).format("HH:MM:SS a")}
+            {moment(recommendation.dateFrom).format("hh:mm:ss a")} -{" "}
+            {moment(recommendation.dateTo).format("hh:mm:ss a")}
           </p>
 
           <div style={{ marginTop: "1.2rem" }}>

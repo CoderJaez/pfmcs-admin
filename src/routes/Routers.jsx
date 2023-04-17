@@ -11,6 +11,7 @@ import {
   User,
   Recommendation,
   CriteriaAssessment,
+  Recommendations,
 } from "../pages";
 import AdminLayout from "../shared/components/layouts/AdminLayout";
 import { DeviceCard } from "../components/settings/devices";
@@ -28,6 +29,7 @@ const Routers = () => {
           <Route path="/" element={<Dashboard />} />
           <Route path="/settings/devices" element={<Device />} />
           <Route path="/settings/remarks" element={<Remarks />} />
+          <Route path="/mcda-recommendations" element={<Recommendations />} />
           <Route element={<ParamsThresholdLayout />}>
             <Route
               path="/settings/parameter-thresholds"

@@ -48,7 +48,6 @@ const Readings = () => {
           setReadings(res.data);
         })
         .catch((err) => {
-          console.log("Readings:", err);
           if (!err.valid_token) {
             toast.current.show({
               severity: "error",
@@ -89,6 +88,7 @@ const Readings = () => {
     setPage(event.first);
     setLimit(event.rows);
   };
+
   const filterDate = () => {
     return (
       <div className="flex align-items-center justify-content-end ">

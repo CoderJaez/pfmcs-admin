@@ -9,7 +9,9 @@ import DataEntry from "./DataEntry";
 import User from "./Settings/User";
 import Recommendation from "./Settings/Recommendation";
 import CriteriaAssessment from "./Settings/CriteriaAssessment";
+import Recommendations from "./Recommendations";
 export {
+  Recommendations,
   Login,
   CriteriaAssessment,
   Dashboard,

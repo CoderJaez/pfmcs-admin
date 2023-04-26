@@ -271,7 +271,7 @@ const ReadingsRealtimeData = () => {
       >
         <Column field="name" header="Name" />
         <Column field="value" header="Value" />
-        <Column field="createdAt" body={dateFormat} header="CreatedAt" />
+        <Column field="createdAt" body={dateFormat} header="Recorded At" />
       </DataTable>
       <Paginator
         template={template}

@@ -272,7 +272,7 @@ const Readings = () => {
             <Column
               field="createdAt"
               body={formatDate}
-              header="Created At"
+              header="Recorded At"
               style={{ width: "25%" }}
             ></Column>
           </DataTable>

@@ -26,7 +26,8 @@ const Recommendations = () => {
   }, []);
   return (
     <CardLayout
-      title={`Recommendations for ${date}`}
+      title={`Suggested actions to maintain normal health environmental condition
+as of ${date}`}
       header_style="card-warning"
     >
       <h5>Average Temperature and humidity</h5>

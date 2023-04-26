@@ -87,7 +87,7 @@ const SideNav = React.memo(() => {
                   onClick={() => setUrlPath("/mcda-recommendations")}
                 >
                   <i className="nav-icon fas  fa-book" />
-                  <p>Recommendations</p>
+                  <p>Multi-Criteria Assessment</p>
                 </Link>
               </li>
               <li className="nav-item">

@@ -48,7 +48,7 @@ const Login = () => {
     <>
       <Toast ref={toast} />
       <div className="d-flex justify-content-center">
-        <div className="card" style={{ width: "30%", marginTop: "10rem" }}>
+        <div className="card" style={{ minWidth: "30%", marginTop: "10rem" }}>
           <Card title="Smart Poultry Farm" style={{ textAlign: "center" }}>
             <form onSubmit={handleSubmit}>
               <div className="d-flex flex-column justify-content-center align-items-center">

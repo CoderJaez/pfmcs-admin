@@ -268,7 +268,7 @@ const Recommendations = () => {
   };
 
   return (
-    <ContentLayout contentTitle="Recommendations">
+    <ContentLayout contentTitle="Suggested actions to maintain normal health environmental condition">
       <Toast ref={toast} />
       <CardLayout header_style="card-primary">
         <Toolbar left={searchName} right={filterDate} />
@@ -291,12 +291,12 @@ const Recommendations = () => {
           <Column field="ammonia" header="Ammonia"></Column>
           <Column field="assessment" header="Assessment" />
           <Column body={recommendaionBody} header="Recommendations" />
-          <Column body={formatTime} header="time" />
           <Column
             field="createdAt"
             body={formatDate}
-            header="Created At"
+            header="Recorded At"
           ></Column>
+          <Column body={formatTime} />
         </DataTable>
 
         <Paginator

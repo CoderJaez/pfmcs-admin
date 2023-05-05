@@ -25,6 +25,8 @@ export const UserAuthContextProvider = ({ children }) => {
           Authorization: `Bearer ${token}`,
         },
       };
+    } else {
+      logout();
     }
   };
 

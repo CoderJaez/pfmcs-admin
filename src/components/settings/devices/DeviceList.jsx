@@ -160,7 +160,7 @@ const DeviceList = () => {
 
   const confirmDeleteDevice = (rowData) => {
     const accept = async () => {
-      await DeviceService.deleteData(rowData._id)
+      await DeviceService.deleteData(rowData._id, config.current)
         .then((res) => {
           if (res.success) {
             toast.current.show({

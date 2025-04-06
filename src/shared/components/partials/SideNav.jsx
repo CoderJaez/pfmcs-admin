@@ -173,7 +173,7 @@ const SideNav = React.memo(() => {
                   </li>
                   <li className="nav-item">
                     <Link
-                      to="/settings/multi-criteria-assesments"
+                      to="/settings/multi-criteria-assessments"
                       className={`nav-link ${
                         urlPath === "multi-criteria-assesments" ? "active" : ""
                       }`}
@@ -193,6 +193,19 @@ const SideNav = React.memo(() => {
                     >
                       <i className="nav-icon fas fa-device" />
                       <p>Rec Interval</p>
+                    </Link>
+                  </li>
+
+                  <li className="nav-item">
+                    <Link
+                      to="settings/farms"
+                      className={`nav-link ${
+                        urlPath === "farms" ? "active" : ""
+                      }`}
+                      onClick={() => setUrlPath("farms")}
+                    >
+                      <i className="nav-icon fas fa-device" />
+                      <p>Farms</p>
                     </Link>
                   </li>
                 </>

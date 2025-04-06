@@ -31,7 +31,7 @@ const CriteriaAssessment = () => {
       search,
       page,
       limit,
-      config.current,
+      config.current
     )
       .then((res) => {
         setAssessments(res.data);
@@ -70,7 +70,7 @@ const CriteriaAssessment = () => {
     const accept = async () => {
       await CriteriaAssessmentService.DeleteAssesment(
         rowData._id,
-        config.current,
+        config.current
       )
         .then((res) => {
           if (res.success) {
@@ -174,7 +174,7 @@ const CriteriaAssessment = () => {
           size="small"
           onClick={() =>
             navigate(
-              `/settings/multi-criteria-assesments-details/${rowdata._id}`,
+              `/settings/multi-criteria-assessments/details/${rowdata._id}`
             )
           }
         />
@@ -199,7 +199,7 @@ const CriteriaAssessment = () => {
           icon="pi pi-plus"
           size="small"
           onClick={() =>
-            navigate("/settings/multi-criteria-assesments-details")
+            navigate("/settings/multi-criteria-assessments/details")
           }
           severity="success"
           style={{ width: "100px", marginRight: "10px" }}

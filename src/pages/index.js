@@ -2,6 +2,7 @@ import Dashboard from "./Dashboard";
 import Device from "./Settings/Device";
 import Readings from "./Readings";
 import Remarks from "./Settings/Remarks";
+import Farm from "./Settings/Farm";
 import ParamsThreshold from "./Settings/ParamsThreshold";
 import ReadingsRealtimeData from "./ReadingsRealtimeData";
 import Login from "./Login";
@@ -22,5 +23,6 @@ export {
   ReadingsRealtimeData,
   DataEntry,
   User,
+  Farm,
   Recommendation,
 };

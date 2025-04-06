@@ -12,6 +12,7 @@ import {
   Recommendation,
   CriteriaAssessment,
   Recommendations,
+  Farm,
 } from "../pages";
 import AdminLayout from "../shared/components/layouts/AdminLayout";
 import { DeviceCard } from "../components/settings/devices";
@@ -27,48 +28,46 @@ const Routers = () => {
         <Route path="/login" element={<Login />} />
         <Route element={<AdminLayout />}>
           <Route path="/" element={<Dashboard />} />
-          <Route path="/settings/devices" element={<Device />} />
-          <Route path="/settings/remarks" element={<Remarks />} />
           <Route path="/mcda-recommendations" element={<Recommendations />} />
-          <Route element={<ParamsThresholdLayout />}>
+          <Route path="/settings">
+            <Route path="devices">
+              <Route path="" element={<Device />} />
+              <Route path=":id/data-streams" element={<DeviceCard />} />
+            </Route>
+
+            <Route path="remarks" element={<Remarks />} />
             <Route
-              path="/settings/parameter-thresholds"
-              element={<ParamsThreshold />}
-            />
+              path="parameter-thresholds"
+              element={<ParamsThresholdLayout />}
+            >
+              <Route path="" element={<ParamsThreshold />} />
+              <Route path="new" element={<ParamsThresholdCard />} />
+              <Route path=":id" element={<ParamsThresholdCard />} />
+            </Route>
+            <Route path="users">
+              <Route path="" element={<User />} />
+              <Route path="new" element={<UserCard />} />
+              <Route path=":id" element={<UserCard />} />
+            </Route>
+
+            <Route path="multi-criteria-assessments">
+              <Route path="" element={<CriteriaAssessment />} />
+              <Route path=":id" element={<CriteriaAssessmentCard />} />
+
+              <Route path="details" element={<CriteriaAssessmentCard />} />
+            </Route>
+
             <Route
-              path="/settings/parameter-thresholds-new"
-              element={<ParamsThresholdCard />}
+              path="recommendation-intervals"
+              element={<Recommendation />}
             />
-            <Route
-              path="/settings/parameter-thresholds/:id"
-              element={<ParamsThresholdCard />}
-            />
+
+            <Route path="farms">
+              <Route path="" element={<Farm />} />
+              <Route path=":id" element={<Farm />} />
+              <Route path="new" element={<Farm />} />
+            </Route>
           </Route>
-
-          <Route path="/settings/users" element={<User />} />
-          <Route path="/settings/users-new" element={<UserCard />} />
-          <Route path="/settings/users-update/:id" element={<UserCard />} />
-          <Route
-            path="/settings/multi-criteria-assesments"
-            element={<CriteriaAssessment />}
-          />
-          <Route
-            path="/settings/multi-criteria-assesments-details/:id"
-            element={<CriteriaAssessmentCard />}
-          />
-
-          <Route
-            path="/settings/multi-criteria-assesments-details/"
-            element={<CriteriaAssessmentCard />}
-          />
-          <Route
-            path="/settings/recommendation-intervals"
-            element={<Recommendation />}
-          />
-          <Route
-            path="/settings/devices/:id/data-streams"
-            element={<DeviceCard />}
-          />
 
           <Route path="/readings" element={<Readings />} />
           <Route path="/rawdata-readings" element={<ReadingsRealtimeData />} />

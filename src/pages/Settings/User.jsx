@@ -160,7 +160,7 @@ const User = () => {
           outlined
           severity="warning"
           className="mr-2"
-          onClick={() => navigate(`/settings/users-update/${rowData._id}`)}
+          onClick={() => navigate(`/settings/users/${rowData._id}`)}
           size="small"
         />
         <Button
@@ -197,7 +197,7 @@ const User = () => {
           severity="success"
           size="small"
           icon="pi pi-plus"
-          onClick={() => navigate("/settings/users-new")}
+          onClick={() => navigate("/settings/users/new")}
         />
       </>
     );

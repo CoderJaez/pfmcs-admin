@@ -50,7 +50,7 @@ const ParamsThresholdList = () => {
           label="New"
           icon="pi pi-plus"
           size="small"
-          onClick={() => navigate("/settings/parameter-thresholds-new")}
+          onClick={() => navigate("/settings/parameter-thresholds/new")}
           severity="success"
           style={{ width: "100px", marginRight: "10px" }}
         />
@@ -128,7 +128,7 @@ const ParamsThresholdList = () => {
               detail: res.message,
             });
             const filteredThreshold = thresholds.filter(
-              (threshold) => threshold._id !== rowData._id,
+              (threshold) => threshold._id !== rowData._id
             );
             setThresholds(filteredThreshold);
           }

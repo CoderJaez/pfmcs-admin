@@ -16,18 +16,15 @@ import { UserService } from "../../service/userService";
 import { Paginator } from "primereact/paginator";
 import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
 import { Dropdown } from "primereact/dropdown";
-import {
-  CardLayout,
-  ContentLayout,
-  FormLayout,
-} from "../../shared/components/layouts";
+import { CardLayout, ContentLayout } from "../../shared/components/layouts";
 import { Column } from "primereact/column";
 import { useNavigate } from "react-router-dom";
+import FarmService from "../../service/farmService";
 
 const Farm = () => {
   const toast = useRef(null);
 
-  const [users, setUsers] = useState([]);
+  const [farms, setFarms] = useState([]);
   const [search, setSearch] = useState([]);
   const { config, userRef, logout, toggleToken } = useContext(UserAuthContext);
   const [loading, setLoading] = useState(false);
@@ -40,10 +37,10 @@ const Farm = () => {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      await UserService.FindUsers(search, page, limit, config.current)
+      await FarmService.getFarm(search, page, limit, config.current)
         .then((res) => {
           const data = res.data;
-          setUsers(data.filter((d) => d.email !== userRef.current.email));
+          setFarms(data);
           setTotalrecords(res.totalRecords);
           setLoading(false);
         })
@@ -55,9 +52,11 @@ const Farm = () => {
               detail: err.message,
             });
             setLoading(false);
-            setTimeout(() => {
-              logout();
-            }, 500);
+            // setTimeout(() => {
+            //   logout();
+            // }, 500);
+
+            console.log(err);
           }
         });
     };
@@ -66,7 +65,7 @@ const Farm = () => {
 
   const deleteData = (rowData) => {
     const accept = async () => {
-      await UserService.DeleteUser(rowData._id, config.current)
+      await FarmService.deleteFarm(rowData._id, config.current)
         .then((res) => {
           if (res.success) {
             toast.current.show({
@@ -74,6 +73,7 @@ const Farm = () => {
               summary: "Success",
               detail: res.message,
             });
+            setFarms((prev) => prev.filter((item) => item._id !== rowData._id));
           }
         })
         .catch((err) => {
@@ -101,66 +101,16 @@ const Farm = () => {
     });
   };
 
-  const resetPassword = (rowData) => {
-    const accept = async () => {
-      await UserService.SetDefaultPass(rowData._id, config.current)
-        .then((res) => {
-          if (res.success) {
-            toast.current.show({
-              severity: "success",
-              summary: "Success",
-              detail: res.message,
-            });
-          }
-        })
-        .catch((err) => {
-          if (!err.valid_token) {
-            toast.current.show({
-              severity: "warn",
-              summary: "Unauthorized",
-              detail: err.message,
-            });
-            setLoading(false);
-            setTimeout(() => {
-              logout();
-            }, 500);
-          } else {
-            toast.current.show({
-              severity: "warn",
-              summary: "Error",
-              detail: err.message,
-            });
-          }
-        });
-    };
-    confirmDialog({
-      message: "Do you want to reset password this record?",
-      header: "Reset Password Confirmation",
-      icon: "pi pi-info-circle",
-      acceptClassName: "p-button-danger",
-      accept,
-    });
-  };
-
   const actionBodyTemplate = (rowData) => {
     return (
       <>
-        <Button
-          label="Reset Password"
-          icon="pi pi-refresh"
-          outlined
-          severity="primary"
-          className="mr-2"
-          onClick={() => resetPassword(rowData)}
-          size="small"
-        />
         <Button
           label="Edit"
           icon="pi pi-pencil"
           outlined
           severity="warning"
           className="mr-2"
-          onClick={() => navigate(`/settings/users-update/${rowData._id}`)}
+          onClick={() => navigate(`/settings/farms/${rowData._id}`)}
           size="small"
         />
         <Button
@@ -197,14 +147,10 @@ const Farm = () => {
           severity="success"
           size="small"
           icon="pi pi-plus"
-          onClick={() => navigate("/settings/users-new")}
+          onClick={() => navigate("/settings/farms/new")}
         />
       </>
     );
-  };
-
-  const fullname = (rowData) => {
-    return `${rowData.firstname} ${rowData.lastname}`;
   };
 
   const template = {
@@ -263,7 +209,7 @@ const Farm = () => {
         <Toolbar left={searchToolbar} right={addNewToolbar} />
         <Divider />
         <DataTable
-          value={users}
+          value={farms}
           lazy
           loading={loading}
           selectionMode="single"
@@ -271,9 +217,9 @@ const Farm = () => {
           rows={limit}
           rowsPerPageOptions={[5, 10, 25, 50, 100]}
         >
-          <Column body={fullname} header="Fullname" />
-          <Column field="email" header="Email" />
-          <Column field="roles" header="Role" />
+          <Column field="name" header="Name" />
+          <Column field="owner" header="Owner" />
+          <Column field="address" header="Address" />
           <Column body={actionBodyTemplate} style={{ width: "30rem" }} />
         </DataTable>
         <Paginator

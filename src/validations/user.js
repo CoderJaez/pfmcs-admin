@@ -4,5 +4,6 @@ export const UserSchema = yup.object({
   firstname: yup.string().required("Firstname is required"),
   lastname: yup.string().required("Lastname is required"),
   email: yup.string().required("Email is required").email("Invalid email"),
+  farm: yup.string().required("Farm is required"),
   roles: yup.string().required("Roles is required"),
 });

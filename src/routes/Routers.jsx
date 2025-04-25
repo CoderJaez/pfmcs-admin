@@ -19,6 +19,7 @@ import { DeviceCard } from "../components/settings/devices";
 import ParamsThresholdLayout from "../components/layouts/ParamsThreholdLayout";
 import { ParamsThresholdCard } from "../components/settings/thresholds";
 import UserCard from "../components/settings/users/UserCard";
+import FarmCard from "../components/settings/farms/FarmCard";
 import Error404 from "../pages/Error404";
 import CriteriaAssessmentCard from "../components/settings/criteria_assessments/CriteriaAssessmentCard";
 const Routers = () => {
@@ -64,8 +65,8 @@ const Routers = () => {
 
             <Route path="farms">
               <Route path="" element={<Farm />} />
-              <Route path=":id" element={<Farm />} />
-              <Route path="new" element={<Farm />} />
+              <Route path=":id" element={<FarmCard />} />
+              <Route path="new" element={<FarmCard />} />
             </Route>
           </Route>
 

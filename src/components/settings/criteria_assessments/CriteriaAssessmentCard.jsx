@@ -22,7 +22,7 @@ const CriteriaAssessmentCard = () => {
       const updateAssessment = { ...assesment, ...values };
       await CriteriaAssessmentService.UpdateAssesment(
         updateAssessment,
-        config.current,
+        config.current
       )
         .then((res) => {
           if (res.success) {
@@ -146,7 +146,7 @@ const CriteriaAssessmentCard = () => {
         header_style="card-primary"
         title="Criteria Assessment Details"
         handleSubmit={handleSubmit}
-        onHide={() => navigate("/settings/multi-criteria-assesments/")}
+        onHide={() => navigate("/settings/multi-criteria-assessments/")}
       >
         <Toast ref={toast} />
         <div className="d-flex justify-content-end">

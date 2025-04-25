@@ -44,6 +44,7 @@ const UserCard = () => {
     toggleToken();
     fetchUser();
   }, []);
+
   const onSubmit = async (values, actions) => {
     if (user._id) {
       const updateUser = { ...user, ...values };

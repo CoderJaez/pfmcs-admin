@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef } from "react";
+import React, { useContext, useRef } from "react";
 import { Card } from "primereact/card";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
@@ -8,11 +8,12 @@ import { useFormik } from "formik";
 import { Toast } from "primereact/toast";
 import { useNavigate } from "react-router-dom";
 import { LoginAuthSchema } from "../validations/loginAuth";
+import FarmService from "../service/farmService";
 const Login = () => {
-  const [loading, setLoading] = useState(false);
   const { login, user } = useContext(UserAuthContext);
   const nav = useNavigate();
   const toast = useRef(null);
+
   const onSubmit = async (values, actions) => {
     try {
       const result = await login(values.email, values.password);

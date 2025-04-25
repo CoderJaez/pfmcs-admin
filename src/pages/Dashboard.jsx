@@ -3,7 +3,7 @@ import { ContentLayout, CardLayout } from "../shared/components/layouts";
 import { UserService } from "../service/userService";
 import DeviceList from "../components/devices/DeviceList";
 import { UserAuthContext } from "../context/UserAuthContext";
-
+import FarmService from "../service/farmService";
 import {
   HumSummary,
   TempSummary,
@@ -19,10 +19,21 @@ const Dashboard = () => {
   const date = moment(new Date()).format(`MMMM YYYY`);
   const { config, toggleToken } = useContext(UserAuthContext);
 
+  const fetchData = async () => {
+    await FarmService.getFarm("", 0, 20, config.current)
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   useEffect(() => {
     toggleToken();
+    fetchData();
     // checkAccessToken();
   }, []);
+
   return (
     <>
       <ContentLayout contentTitle="Dashboard">

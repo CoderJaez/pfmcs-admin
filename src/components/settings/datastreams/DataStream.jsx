@@ -28,7 +28,13 @@ const DataStream = ({
   for (let index = 0; index < 50; index++) {
     vpins.push(`V${index}`);
   }
-  const sensor_types = ["Temperature", "Humidity", "Ammonia", "None"];
+  const sensor_types = [
+    "Temperature",
+    "Humidity",
+    "Ammonia",
+    "Water Level",
+    "None",
+  ];
   const toast = useRef(null);
 
   const onSubmit = async (values, actions) => {

@@ -7,7 +7,6 @@ const FarmService = {
       axios
         .post(`${url}farms/`, data, config)
         .then((res) => {
-          console.log(res.data);
           resolve(res.data);
         })
         .catch((err) => {
@@ -31,7 +30,10 @@ const FarmService = {
     return await new Promise((resolve, reject) => {
       axios
         .get(`${url}farms?search=${search}&page=${page}&limit=${limit}`, config)
-        .then((res) => resolve(res.data))
+        .then((res) => {
+          sessionStorage.setItem("farms", JSON.stringify(res.data.data));
+          resolve(res.data);
+        })
         .catch((err) => reject(err.response.data));
     });
   },

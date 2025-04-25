@@ -15,6 +15,8 @@ import { useNavigate } from "react-router-dom";
 import { UserAuthContext } from "../../../context/UserAuthContext";
 import { UserService } from "../../../service/userService";
 import { InputSwitch } from "primereact/inputswitch";
+import { Dropdown } from "primereact/dropdown";
+
 const DeviceList = () => {
   const toast = useRef(null);
   const [_device, _setDevice] = useState({});
@@ -24,6 +26,7 @@ const DeviceList = () => {
   const [search, setSearch] = useState("");
   const { config, logout, toggleToken } = useContext(UserAuthContext);
   const navigate = useNavigate();
+  const [farms, setFarms] = useState([]);
 
   const fetchData = async () => {
     setLoading(true);
@@ -47,6 +50,18 @@ const DeviceList = () => {
     fetchData();
   }, [search]);
 
+  useEffect(() => {
+    const data = sessionStorage.getItem("farms");
+    if (data) {
+      const farms = JSON.parse(data);
+      const farmOptions = farms.map((farm) => ({
+        label: farm.name,
+        value: farm._id,
+      }));
+      setFarms(farmOptions);
+    }
+  }, []);
+
   const onSubmit = async (values, actions) => {
     if (_device._id) {
       const updateDevice = { ..._device, ...values };
@@ -64,8 +79,8 @@ const DeviceList = () => {
               prevData.map((device) =>
                 device._id === updateDevice._id
                   ? { ...device, ...updateDevice }
-                  : device,
-              ),
+                  : device
+              )
             );
           } else {
             console.log("Validation Error:", res);
@@ -169,7 +184,7 @@ const DeviceList = () => {
               detail: res.message,
             });
             const newDevices = data.filter(
-              (device) => device._id !== rowData._id,
+              (device) => device._id !== rowData._id
             );
             setData(newDevices);
           }
@@ -320,6 +335,23 @@ const DeviceList = () => {
                   onChange={handleChange}
                 />
               </div>
+
+              <div className="form-group">
+                <label htmlFor="farm">Farm:</label>
+
+                <Dropdown
+                  name="farm"
+                  options={farms}
+                  placeholder="Select Farm"
+                  onChange={handleChange}
+                  value={values.farm}
+                  className={
+                    errors.farm && touched.farm
+                      ? "p-inputtext-sm  p-invalid"
+                      : "p-inputtext-sm"
+                  }
+                />
+              </div>
             </FormLayout>
           ) : null}
         </div>
@@ -339,6 +371,7 @@ const DeviceList = () => {
             >
               <Column field="name" header="Name"></Column>
               <Column field="deviceId" header="Device Id"></Column>
+              <Column field="farm" header="Farm"></Column>
               <Column field="dateCreated" header="Created At"></Column>
               <Column body={dataStreams} header="Datastreams"></Column>
               <Column

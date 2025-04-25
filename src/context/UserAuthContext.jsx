@@ -1,5 +1,4 @@
 import React, { useState, createContext, useEffect, useRef } from "react";
-import { key } from "../constants/env";
 import { UserService } from "../service/userService";
 import { useNavigate } from "react-router-dom";
 import jwtDecode from "jwt-decode";
@@ -33,25 +32,6 @@ export const UserAuthContextProvider = ({ children }) => {
   useEffect(() => {
     checkToken();
   }, []);
-
-  // useEffect(() => {
-  //   const intervalId = setInterval(() => {
-  //     UserService.CheckToken().catch((err) => {
-  //       toast.current.show({
-  //         serverity: "warn",
-  //         summary: "Unauthorized",
-  //         detail: err.message,
-  //       });
-
-  //       setTimeout(() => {
-  //         logout();
-  //       }, 5000);
-  //     });
-  //     return () => {
-  //       clearInterval(intervalId);
-  //     };
-  //   }, 1000);
-  // });
 
   async function login(email, passwword) {
     let result;

@@ -135,19 +135,6 @@ const SideNav = React.memo(() => {
 
                   <li className="nav-item">
                     <Link
-                      to="settings/remarks"
-                      className={`nav-link ${
-                        urlPath === "remarks" ? "active" : ""
-                      }`}
-                      onClick={() => setUrlPath("remarks")}
-                    >
-                      <i className="nav-icon fas fa-device" />
-                      <p>Remarks</p>
-                    </Link>
-                  </li>
-
-                  <li className="nav-item">
-                    <Link
                       to="settings/parameter-thresholds"
                       className={`nav-link ${
                         urlPath === "parameter-thresholds" ? "active" : ""

@@ -36,7 +36,6 @@ const Routers = () => {
               <Route path=":id/data-streams" element={<DeviceCard />} />
             </Route>
 
-            <Route path="remarks" element={<Remarks />} />
             <Route
               path="parameter-thresholds"
               element={<ParamsThresholdLayout />}
@@ -45,7 +44,7 @@ const Routers = () => {
               <Route path="new" element={<ParamsThresholdCard />} />
               <Route path=":id" element={<ParamsThresholdCard />} />
             </Route>
-            <Route path="users">
+            <Route path="users">      
               <Route path="" element={<User />} />
               <Route path="new" element={<UserCard />} />
               <Route path=":id" element={<UserCard />} />

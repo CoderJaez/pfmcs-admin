@@ -6,12 +6,16 @@ import Farm from "./Settings/Farm";
 import ParamsThreshold from "./Settings/ParamsThreshold";
 import ReadingsRealtimeData from "./ReadingsRealtimeData";
 import Login from "./Login";
-import DataEntry from "./DataEntry";
+import DataEntry from "./PoultryStatEncoding";
 import User from "./Settings/User";
 import Recommendation from "./Settings/Recommendation";
 import CriteriaAssessment from "./Settings/CriteriaAssessment";
 import Recommendations from "./Recommendations";
+import PoultryStatList from "./PoultryStatList";
+import PoultryStatEncoding from "./PoultryStatEncoding";
 export {
+  PoultryStatEncoding,
+  PoultryStatList,
   Recommendations,
   Login,
   CriteriaAssessment,

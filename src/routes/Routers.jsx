@@ -4,7 +4,8 @@ import {
   Dashboard,
   Device,
   Readings,
-  Remarks,
+  PoultryStatEncoding,
+  PoultryStatList,
   ParamsThreshold,
   ReadingsRealtimeData,
   Login,
@@ -44,7 +45,7 @@ const Routers = () => {
               <Route path="new" element={<ParamsThresholdCard />} />
               <Route path=":id" element={<ParamsThresholdCard />} />
             </Route>
-            <Route path="users">      
+            <Route path="users">
               <Route path="" element={<User />} />
               <Route path="new" element={<UserCard />} />
               <Route path=":id" element={<UserCard />} />
@@ -67,6 +68,12 @@ const Routers = () => {
               <Route path=":id" element={<FarmCard />} />
               <Route path="new" element={<FarmCard />} />
             </Route>
+          </Route>
+
+          <Route path="poultry-stat">
+            <Route path="" element={<PoultryStatList />} />
+            <Route path=":id" element={<PoultryStatEncoding />} />
+            <Route path="new" element={<PoultryStatEncoding />} />
           </Route>
 
           <Route path="/readings" element={<Readings />} />

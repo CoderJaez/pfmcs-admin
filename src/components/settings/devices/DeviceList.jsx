@@ -33,7 +33,6 @@ const DeviceList = () => {
     await DeviceService.getData(null, search, config.current)
       .then((data) => setData(data))
       .catch((err) => {
-        console.error("Device error:", err);
         if (!err.valid_token) {
           toast.current.show({
             severity: "warn",

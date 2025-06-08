@@ -41,7 +41,7 @@ const Readings = () => {
         limit,
         _dateFrom,
         _dateTo,
-        config.current,
+        config.current
       )
         .then((res) => {
           setTotalrecord(res.totalCount);
@@ -192,7 +192,7 @@ const Readings = () => {
         totalRecords,
         _dateFrom,
         _dateTo,
-        config.current,
+        config.current
       )
         .then((res) => {
           const blob = new Blob([Papa.unparse(res.data)], {

@@ -60,5 +60,18 @@ const PoultryStatService = {
         .catch((err) => reject(err.response.data));
     });
   },
+
+  updatePoultryStat: async (id, data, config) => {
+    return await new Promise((resolve, reject) => {
+      axios
+        .put(`${url}poultry-stats/${id}`, data, config)
+        .then((res) => {
+          resolve(res.data);
+        })
+        .catch((err) => {
+          reject(err.response.data);
+        });
+    });
+  },
 };
 export default PoultryStatService;

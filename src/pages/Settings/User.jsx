@@ -1,10 +1,4 @@
-import React, {
-  userState,
-  useEffect,
-  useRef,
-  useContext,
-  useState,
-} from "react";
+import React, { useEffect, useRef, useContext, useState } from "react";
 import { InputText } from "primereact/inputtext";
 import { DataTable } from "primereact/datatable";
 import { Toolbar } from "primereact/toolbar";
@@ -16,11 +10,7 @@ import { UserService } from "../../service/userService";
 import { Paginator } from "primereact/paginator";
 import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
 import { Dropdown } from "primereact/dropdown";
-import {
-  CardLayout,
-  ContentLayout,
-  FormLayout,
-} from "../../shared/components/layouts";
+import { CardLayout, ContentLayout } from "../../shared/components/layouts";
 import { Column } from "primereact/column";
 import { useNavigate } from "react-router-dom";
 

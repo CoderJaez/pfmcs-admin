@@ -3,7 +3,7 @@ import { ContentLayout, CardLayout } from "../shared/components/layouts";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Button } from "primereact/button";
-import { ReadingService } from "../service/readingService";
+import PoultryStatService from "../service/poultryStatService";
 import moment from "moment-timezone";
 import { Toolbar } from "primereact/toolbar";
 import { InputText } from "primereact/inputtext";
@@ -28,21 +28,31 @@ const PoultryStatList = () => {
   const [totalRecords, setTotalrecord] = useState(0);
   const [_dateFrom, setDatefrom] = useState(`${date} 00:00:00`);
   const [_dateTo, setDateto] = useState(`${date} 23:00:00`);
-
+  const navigate = useNavigate();
   const { config, logout, toggleToken } = useContext(UserAuthContext);
 
   useEffect(() => {
-    const fetchStats = async () => {
+    const fetchStats = () => {
       try {
         setLoading(true);
-        const response = await ReadingService.getPoultryStat(
-          search,
-          1,
-          10,
-          config
-        );
-        setStats(response.data);
-        setTotalrecord(response.totalRecords);
+        toggleToken();
+        PoultryStatService.getPoultryStat(search, 1, 10, config.current)
+          .then((response) => {
+            setStats(response.data);
+            setTotalrecord(response.totalRecords);
+          })
+          .catch((error) => {
+            if (error.status === 401) {
+              logout();
+              toggleToken();
+            } else {
+              toast.current.show({
+                severity: "error",
+                summary: "Error",
+                detail: error.message,
+              });
+            }
+          });
       } catch (error) {
         if (error.status === 401) {
           logout();
@@ -73,8 +83,21 @@ const PoultryStatList = () => {
       setFarms(farmOptions);
     }
   }, []);
+  const addNewToolbar = () => {
+    return (
+      <>
+        <Button
+          label="New"
+          severity="success"
+          size="small"
+          icon="pi pi-plus"
+          onClick={() => navigate("/poultry-stat/new")}
+        />
+      </>
+    );
+  };
 
-  const searchName = () => {
+  const searchToolbar = () => {
     return (
       <>
         <span className="p-input-icon-left">
@@ -90,20 +113,33 @@ const PoultryStatList = () => {
 
   return (
     <>
-      <Toast ref={toast} />
-      <div className="col-md-12">
-        <CardLayout
-          title="Poultry Data"
-          className="mb-3"
-          header_style="primary"
-        >
-          <DataTable value={stats} loading={loading}>
-            <Column field="name" header="Name" />
-            <Column field="age" header="Age" />
-            <Column field="farm" header="Farm" />
-          </DataTable>
-        </CardLayout>
-      </div>
+      <ContentLayout contentTitle="Poultry Statistics">
+        <Toast ref={toast} />
+        <div className="col-md-12">
+          <CardLayout
+            title="Poultry Data"
+            className="mb-3"
+            header_style="primary"
+          >
+            <Toolbar left={searchToolbar} right={addNewToolbar} />
+
+            <DataTable value={stats} loading={loading}>
+              <Column field="farm" header="Farm" />
+              <Column field="type" header="Type" />
+              <Column field="value" header="Value" />
+              <Column
+                field="createdAt"
+                header="Encoding Date"
+                body={(rowData) =>
+                  moment(new Date(rowData.createdAt)).format(
+                    "MMMM DD, YYYY hh:mm a"
+                  )
+                }
+              />
+            </DataTable>
+          </CardLayout>
+        </div>
+      </ContentLayout>
     </>
   );
 };

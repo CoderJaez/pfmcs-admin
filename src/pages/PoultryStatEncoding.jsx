@@ -8,7 +8,6 @@ import { UserAuthContext } from "../context/UserAuthContext";
 import { useNavigate } from "react-router-dom";
 import PoultryStatService from "../service/poultryStatService";
 import { Toast } from "primereact/toast";
-import { Divider } from "primereact/divider";
 import { useFormik } from "formik";
 import PoultryStatSchema from "../validations/poultryStatSchema";
 
@@ -22,6 +21,7 @@ const PoultryStatEncoding = () => {
 
   useEffect(() => {
     const data = sessionStorage.getItem("farms");
+    toggleToken();
     if (data) {
       const farms = JSON.parse(data);
       const farmOptions = farms.map((farm) => ({
@@ -30,11 +30,34 @@ const PoultryStatEncoding = () => {
       }));
       setFarms(farmOptions);
     }
+    if (id) {
+      PoultryStatService.getPoultryStatById(id, config.current)
+        .then((res) => {
+          if (res.success) {
+            console.log(res.data);
+            setData(res.data);
+            setFieldValue("farm", res.data.farm);
+            setFieldValue("type", res.data.type);
+            setFieldValue("value", res.data.value);
+            setFieldValue("createdAt", res.data.createdAt.split("T")[0]);
+          }
+        })
+        .catch((err) => {
+          if (!err.valid_token) {
+            toast.current.show({
+              severity: "warn",
+              summary: "Unauthorized",
+              detail: err.message,
+            });
+          }
+        });
+    }
   }, []);
-
+  const routeBack = () => {
+    navigate("/poultry-stat");
+  };
   const onSubmit = (values, actions) => {
     toggleToken();
-    console.log("values", values);
     if (id) {
       const updateData = { ...data, ...values };
       PoultryStatService.updatePoultryStat(id, updateData, config.current)
@@ -45,7 +68,9 @@ const PoultryStatEncoding = () => {
               summary: "Success",
               detail: res.message,
             });
-            navigate("/poultry-stat");
+            setTimeout(() => {
+              navigate("/poultry-stat");
+            }, 500);
           }
         })
         .catch((err) => {
@@ -68,15 +93,16 @@ const PoultryStatEncoding = () => {
               detail: res.message,
             });
           }
+          actions.resetForm();
         })
         .catch((err) => {
           if (!err.valid_token) {
             toast.current.show({
               severity: "warn",
-              summary: "Unauthorized",
+              summary: "Failed to save",
               detail: err.message,
             });
-            setTimeout(() => logout(), 500);
+            // setTimeout(() => logout(), 500);
           }
         });
     }
@@ -97,7 +123,7 @@ const PoultryStatEncoding = () => {
       farm: "",
       type: "",
       value: "",
-      date: "",
+      createdAt: "",
     },
     validationSchema: PoultryStatSchema,
     onSubmit,
@@ -111,6 +137,7 @@ const PoultryStatEncoding = () => {
           size="50rem"
           title={id ? "Edit Poultry data" : "New Poultry Data"}
           header_style="card-primary"
+          onHide={routeBack}
           handleSubmit={handleSubmit}
         >
           <div className="p-fluid">
@@ -183,30 +210,25 @@ const PoultryStatEncoding = () => {
             <div className="field mb-3">
               <label htmlFor="date">Encoding Date</label>
               <InputText
-                id="date"
-                name="date"
+                id="createdAt"
+                name="createdAt"
                 placeholder="YYYY-MM-DD"
                 type="date"
                 onChange={handleChange}
                 onBlur={handleBlur}
                 className={
-                  errors.date && touched.date
+                  errors.createdAt && touched.createdAt
                     ? "p-inputtext-sm  p-invalid"
                     : "p-inputtext-sm"
                 }
               />
-              {errors.date && touched.date ? (
-                <small className="text-danger">{errors.date}</small>
+              {errors.createdAt && touched.createdAt ? (
+                <small className="text-danger">{errors.createdAt}</small>
               ) : null}
             </div>
           </div>
 
-          <Button
-            type="submit"
-            size="small"
-            label="Save"
-            loading={isSubmitting}
-          />
+          <Button type="submit" size="small" label="Save" />
         </FormLayout>
       </div>
     </ContentLayout>

@@ -83,6 +83,55 @@ const PoultryStatList = () => {
       setFarms(farmOptions);
     }
   }, []);
+
+  const onPageChange = (event) => {
+    setPage(event.first);
+    setLimit(event.rows);
+  };
+
+  const template = {
+    layout: "RowsPerPageDropdown CurrentPageReport PrevPageLink NextPageLink",
+    RowsPerPageDropdown: (options) => {
+      const dropdownOptions = [
+        { label: 5, value: 5 },
+        { label: 10, value: 10 },
+        { label: 20, value: 20 },
+        { label: 50, value: 50 },
+        { label: 120, value: 120 },
+      ];
+
+      return (
+        <React.Fragment>
+          <span
+            className="mx-1"
+            style={{ color: "var(--text-color)", userSelect: "none" }}
+          >
+            Items per page:{" "}
+          </span>
+          <Dropdown
+            value={options.value}
+            options={dropdownOptions}
+            onChange={options.onChange}
+          />
+        </React.Fragment>
+      );
+    },
+    CurrentPageReport: (options) => {
+      return (
+        <span
+          style={{
+            color: "var(--text-color)",
+            userSelect: "none",
+            width: "120px",
+            textAlign: "center",
+          }}
+        >
+          {options.first} - {options.last} of {options.totalRecords}
+        </span>
+      );
+    },
+  };
+
   const addNewToolbar = () => {
     return (
       <>
@@ -111,6 +160,31 @@ const PoultryStatList = () => {
     );
   };
 
+  const actionBodyTemplate = (rowData) => {
+    return (
+      <>
+        <Button
+          label="Edit"
+          icon="pi pi-pencil"
+          outlined
+          severity="warning"
+          className="mr-2"
+          onClick={() => navigate(`/poultry-stat/${rowData._id}`)}
+          size="small"
+        />
+        <Button
+          icon="pi pi-trash"
+          label="Delete"
+          outlined
+          severity="danger"
+          className="mr-2"
+          onClick={() => deleteData(rowData)}
+          size="small"
+        />
+      </>
+    );
+  };
+
   return (
     <>
       <ContentLayout contentTitle="Poultry Statistics">
@@ -123,7 +197,12 @@ const PoultryStatList = () => {
           >
             <Toolbar left={searchToolbar} right={addNewToolbar} />
 
-            <DataTable value={stats} loading={loading}>
+            <DataTable
+              value={stats}
+              loading={loading}
+              rows={limit}
+              rowsPerPageOptions={[5, 10, 25, 50, 100]}
+            >
               <Column field="farm" header="Farm" />
               <Column field="type" header="Type" />
               <Column field="value" header="Value" />
@@ -136,7 +215,22 @@ const PoultryStatList = () => {
                   )
                 }
               />
+
+              <Column
+                field="action"
+                header="Action"
+                body={actionBodyTemplate}
+              />
             </DataTable>
+            <Paginator
+              template={template}
+              first={page}
+              rows={limit}
+              totalRecords={totalRecords}
+              rowsPerPageOptions={[10, 20, 30, 50, 100]}
+              onPageChange={onPageChange}
+              className="justify-content-end"
+            />
           </CardLayout>
         </div>
       </ContentLayout>

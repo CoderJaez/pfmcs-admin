@@ -24,6 +24,7 @@ const PoultryStatService = {
         )
         .then((res) => {
           const poultryStats = res.data.data.map((stat) => ({
+            _id: stat._id,
             farm: stat.farm.name,
             createdAt: stat.createdAt,
             type: stat.type,
@@ -56,7 +57,9 @@ const PoultryStatService = {
     return await new Promise((resolve, reject) => {
       axios
         .get(`${url}poultry-stats/${id}`, config)
-        .then((res) => resolve(res.data))
+        .then((res) => {
+          resolve(res.data.data);
+        })
         .catch((err) => reject(err.response.data));
     });
   },

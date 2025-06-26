@@ -31,16 +31,16 @@ const PoultryStatEncoding = () => {
       setFarms(farmOptions);
     }
     if (id) {
+      // Fetch existing poultry stat data if id is present
+      console.log("Fetching data for id:", id);
       PoultryStatService.getPoultryStatById(id, config.current)
         .then((res) => {
-          if (res.success) {
-            console.log(res.data);
-            setData(res.data);
-            setFieldValue("farm", res.data.farm);
-            setFieldValue("type", res.data.type);
-            setFieldValue("value", res.data.value);
-            setFieldValue("createdAt", res.data.createdAt.split("T")[0]);
-          }
+          console.log("Fetched data:", res);
+          setData(res);
+          setFieldValue("farm", res.farm);
+          setFieldValue("type", res.type);
+          setFieldValue("value", res.value);
+          setFieldValue("createdAt", res.createdAt.split("T")[0]);
         })
         .catch((err) => {
           if (!err.valid_token) {
@@ -49,10 +49,12 @@ const PoultryStatEncoding = () => {
               summary: "Unauthorized",
               detail: err.message,
             });
+            setTimeout(() => logout(), 500);
           }
         });
     }
   }, []);
+
   const routeBack = () => {
     navigate("/poultry-stat");
   };
@@ -102,7 +104,7 @@ const PoultryStatEncoding = () => {
               summary: "Failed to save",
               detail: err.message,
             });
-            // setTimeout(() => logout(), 500);
+            setTimeout(() => logout(), 500);
           }
         });
     }
@@ -128,7 +130,6 @@ const PoultryStatEncoding = () => {
     validationSchema: PoultryStatSchema,
     onSubmit,
   });
-
   return (
     <ContentLayout contentTitle="Poultry Stat Encoding">
       <Toast ref={toast} />
@@ -193,9 +194,10 @@ const PoultryStatEncoding = () => {
                 id="value"
                 name="value"
                 placeholder="Enter a value"
+                value={values.value}
+                type="number"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                type="number"
                 className={
                   errors.value && touched.value
                     ? "p-inputtext-sm  p-invalid"
@@ -213,6 +215,7 @@ const PoultryStatEncoding = () => {
                 id="createdAt"
                 name="createdAt"
                 placeholder="YYYY-MM-DD"
+                value={values.createdAt}
                 type="date"
                 onChange={handleChange}
                 onBlur={handleBlur}

@@ -9,9 +9,7 @@ import { Toolbar } from "primereact/toolbar";
 import { InputText } from "primereact/inputtext";
 import { Paginator } from "primereact/paginator";
 import { Dropdown } from "primereact/dropdown";
-import { Calendar } from "primereact/calendar";
-import Papa from "papaparse";
-import { saveAs } from "file-saver";
+
 import { Toast } from "primereact/toast";
 import { useNavigate } from "react-router-dom";
 import { UserAuthContext } from "../context/UserAuthContext";
@@ -174,11 +172,29 @@ const PoultryStatList = () => {
         />
         <Button
           icon="pi pi-trash"
-          label="Delete"
+          label="Delete1"
           outlined
           severity="danger"
           className="mr-2"
-          onClick={() => deleteData(rowData)}
+          onClick={() => () => {
+            alert("Are you sure you want to delete this poultry statistic?");
+            console.log(rowData);
+            PoultryStatService.deletePoultryStat(rowData._id, config.current)
+              .then(() => {
+                toast.current.show({
+                  severity: "success",
+                  summary: "Success",
+                  detail: "Poultry statistic deleted successfully",
+                });
+              })
+              .catch((error) => {
+                toast.current.show({
+                  severity: "error",
+                  summary: "Error",
+                  detail: error.message,
+                });
+              });
+          }}
           size="small"
         />
       </>

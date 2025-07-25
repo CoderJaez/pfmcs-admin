@@ -10,29 +10,33 @@ import PoultryStatService from "../service/poultryStatService";
 import { Toast } from "primereact/toast";
 import { useFormik } from "formik";
 import PoultryStatSchema from "../validations/poultryStatSchema";
+import jwtDecode from "jwt-decode";
 
 const PoultryStatEncoding = () => {
   const [data, setData] = useState({});
   const navigate = useNavigate();
-  const { logout, config, toggleToken } = useContext(UserAuthContext);
+  const { logout, config, toggleToken, user } = useContext(UserAuthContext);
   const toast = useRef(null);
   const { id } = useParams();
   const [farms, setFarms] = useState([]);
 
   useEffect(() => {
     const data = sessionStorage.getItem("farms");
+    const token = sessionStorage.getItem("token");
+    const decode = jwtDecode(token);
     toggleToken();
-    if (data) {
-      const farms = JSON.parse(data);
-      const farmOptions = farms.map((farm) => ({
-        label: farm.name,
-        value: farm._id,
-      }));
-      setFarms(farmOptions);
-    }
+
+    const farms = JSON.parse(data);
+    const farmOptions = farms.map((farm) => {
+      if (farm._id === decode.data.farm._id)
+        return {
+          label: farm.name,
+          value: farm._id,
+        };
+    });
+    setFarms(farmOptions);
     if (id) {
       // Fetch existing poultry stat data if id is present
-      console.log("Fetching data for id:", id);
       PoultryStatService.getPoultryStatById(id, config.current)
         .then((res) => {
           console.log("Fetched data:", res);

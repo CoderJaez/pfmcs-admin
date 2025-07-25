@@ -10,12 +10,16 @@ import { Toast } from "primereact/toast";
 import { Divider } from "primereact/divider";
 import { useFormik } from "formik";
 import { UserSchema } from "../../../validations/user";
+import useFarmStore from "../../../store/farm.store";
+
 const UserCard = () => {
   const [user, setUser] = useState({});
   const navigate = useNavigate();
   const { logout, config, toggleToken } = useContext(UserAuthContext);
   const { id } = useParams();
   const toast = useRef(null);
+  const [farm, setFarm] = useState([]);
+  const { getFarm } = useFarmStore();
 
   const fetchUser = async () => {
     if (id) {
@@ -43,7 +47,13 @@ const UserCard = () => {
   useEffect(() => {
     toggleToken();
     fetchUser();
-  }, []);
+    if (sessionStorage.getItem("farms")) {
+      const farms = JSON.parse(sessionStorage.getItem("farms"));
+      setFarm(farms);
+    } else {
+      getFarm(config.current);
+    }
+  }, []); 
 
   const onSubmit = async (values, actions) => {
     if (user._id) {
@@ -124,6 +134,7 @@ const UserCard = () => {
       lastname: "",
       email: "",
       roles: "",
+      farm: "",
     },
     validationSchema: UserSchema,
     onSubmit,
@@ -134,7 +145,7 @@ const UserCard = () => {
   };
   const roles = [
     { label: "Admin", value: "ADMIN" },
-    { label: "Encoder", value: "ENCODER" },
+    { label: "Owner", value: "OWNER" },
   ];
   return (
     <ContentLayout>
@@ -199,6 +210,26 @@ const UserCard = () => {
                 <small className="text-danger">{errors.email}</small>
               ) : null}
 
+              <label htmlFor="roles">Farm</label>
+              <Dropdown
+                name="farm"
+                options={farm.map((f) => ({
+                  label: f.name,
+                  value: f._id,
+                }))}
+                placeholder="Select farm"
+                style={{ width: "30rem" }}
+                value={values.farm}
+                onChange={handleChange}
+                className={
+                  errors.farm && touched.farm
+                    ? "p-inputtext-sm  p-invalid"
+                    : "p-inputtext-sm"
+                }
+              />
+              {errors.farm && touched.farm ? (
+                <small className="text-danger">{errors.farm}</small>
+              ) : null}
               <label htmlFor="roles">Roles</label>
               <Dropdown
                 name="roles"

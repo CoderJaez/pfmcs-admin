@@ -19,18 +19,8 @@ const Dashboard = () => {
   const date = moment(new Date()).format(`MMMM YYYY`);
   const { config, toggleToken } = useContext(UserAuthContext);
 
-  const fetchData = async () => {
-    await FarmService.getFarm("", 0, 20, config.current)
-      .then((res) => {
-        console.log(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
   useEffect(() => {
     toggleToken();
-    fetchData();
     // checkAccessToken();
   }, []);
 
@@ -52,7 +42,8 @@ const Dashboard = () => {
             </div>
           </div>
 
-          <div className="row">
+          <div classNa
+          me="row">
             <div className="col-md-12">
               <CardLayout title="Readings">
                 <ReadingsSummary />

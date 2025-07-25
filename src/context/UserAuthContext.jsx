@@ -3,6 +3,7 @@ import { UserService } from "../service/userService";
 import { useNavigate } from "react-router-dom";
 import jwtDecode from "jwt-decode";
 import { Toast } from "primereact/toast";
+import useFarmStore from "../store/farm.store";
 
 export const UserAuthContext = createContext();
 
@@ -11,6 +12,7 @@ export const UserAuthContextProvider = ({ children }) => {
   const config = useRef(null);
   const navigate = useNavigate();
   const userRef = useRef(null);
+  const { getFarm } = useFarmStore();
   const toast = useRef(null);
   const checkToken = async () => {
     let token = sessionStorage.getItem("token");
@@ -36,7 +38,7 @@ export const UserAuthContextProvider = ({ children }) => {
   async function login(email, passwword) {
     let result;
     await UserService.login(email, passwword)
-      .then((res) => {
+      .then(async (res) => {
         if (res.success) {
           const decode = jwtDecode(res.token);
           setUser(decode);
@@ -48,6 +50,7 @@ export const UserAuthContextProvider = ({ children }) => {
               Authorization: `Bearer ${res.token}`,
             },
           };
+          await getFarm(config.current);
         }
 
         result = res;

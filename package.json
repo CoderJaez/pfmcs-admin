@@ -25,7 +25,8 @@
     "react-dom": "^18.2.0",
     "react-jwt": "^1.1.8",
     "react-router-dom": "^6.9.0",
-    "yup": "^1.0.2"
+    "yup": "^1.0.2",
+    "zustand": "^5.0.6"
   },
   "devDependencies": {
     "@types/react": "^18.0.27",

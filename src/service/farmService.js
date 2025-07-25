@@ -26,12 +26,12 @@ const FarmService = {
         });
     });
   },
+
   getFarm: async (search, page, limit, config) => {
     return await new Promise((resolve, reject) => {
       axios
         .get(`${url}farms?search=${search}&page=${page}&limit=${limit}`, config)
         .then((res) => {
-          sessionStorage.setItem("farms", JSON.stringify(res.data.data));
           resolve(res.data);
         })
         .catch((err) => reject(err.response.data));

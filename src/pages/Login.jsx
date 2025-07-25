@@ -8,7 +8,6 @@ import { useFormik } from "formik";
 import { Toast } from "primereact/toast";
 import { useNavigate } from "react-router-dom";
 import { LoginAuthSchema } from "../validations/loginAuth";
-import FarmService from "../service/farmService";
 const Login = () => {
   const { login, user } = useContext(UserAuthContext);
   const nav = useNavigate();

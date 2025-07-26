@@ -15,6 +15,7 @@ import { saveAs } from "file-saver";
 import { Toast } from "primereact/toast";
 import { useNavigate } from "react-router-dom";
 import { UserAuthContext } from "../context/UserAuthContext";
+import jwtDecode from "jwt-decode";
 
 const Readings = () => {
   const date = moment(new Date()).format(`YYYY-MM-DD`);
@@ -30,12 +31,15 @@ const Readings = () => {
   let networkTimeout = null;
   const toast = useRef(null);
   const { config } = useContext(UserAuthContext);
-
+  const token = sessionStorage.getItem("token");
+  const decode = jwtDecode(token);
+  const farm = decode.data.farm ? decode.data.farm._id : null;
   const fetchData = () => {
     setLoading(true);
     if (networkTimeout) clearTimeout(networkTimeout);
     networkTimeout = setTimeout(() => {
       ReadingService.getReadings(
+        null,
         search,
         page,
         limit,
@@ -136,6 +140,7 @@ const Readings = () => {
   };
 
   const headers = [
+    { label: "Farm", key: "farm" },
     { label: "Name", key: "name" },
     { label: "Value", key: "value" },
     { label: "Created At", key: "createdAt" },
@@ -259,6 +264,11 @@ const Readings = () => {
             rows={limit}
             rowsPerPageOptions={[5, 10, 25, 50, 100]}
           >
+            <Column
+              field="farm"
+              header="Farm"
+              style={{ width: "25%" }}
+            ></Column>
             <Column
               field="name"
               header="Name"

@@ -15,13 +15,13 @@ const PoultryStatService = {
     });
   },
 
-  getPoultryStat: async (search, page, limit, config) => {
+  getPoultryStat: async (farm, search, page, limit, config) => {
+    const queries = farm
+      ? `?farm=${farm}&search=${search}&page=${page}&limit=${limit}`
+      : `?search=${search}&page=${page}&limit=${limit}`;
     return await new Promise((resolve, reject) => {
       axios
-        .get(
-          `${url}poultry-stats?search=${search}&page=${page}&limit=${limit}`,
-          config
-        )
+        .get(`${url}poultry-stats${queries}`, config)
         .then((res) => {
           const poultryStats = res.data.data.map((stat) => ({
             _id: stat._id,

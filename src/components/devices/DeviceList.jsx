@@ -5,11 +5,17 @@ import { CardLayout } from "../../shared/components/layouts";
 import { url } from "../../constants/env";
 import Device from "./Device";
 import { UserAuthContext } from "../../context/UserAuthContext";
+import jwtDecode from "jwt-decode";
 const DeviceList = () => {
   const [devices, setDevices] = useState([]);
   const { config } = useContext(UserAuthContext);
   const fetchData = async () => {
-    const response = await axios(`${url}summaries/devices`, config.current);
+    const token = sessionStorage.getItem("token");
+    const decode = jwtDecode(token);
+    const response = await axios(
+      `${url}summaries/devices/${decode.data.farm ? decode.data.farm._id : ""}`,
+      config.current
+    );
     if (response.data) {
       const tempDevices = response.data;
       if (tempDevices) {

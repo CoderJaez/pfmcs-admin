@@ -13,6 +13,7 @@ import { Dropdown } from "primereact/dropdown";
 import { Toast } from "primereact/toast";
 import { useNavigate } from "react-router-dom";
 import { UserAuthContext } from "../context/UserAuthContext";
+import jwtDecode from "jwt-decode";
 
 const PoultryStatList = () => {
   const toast = useRef(null);
@@ -34,7 +35,10 @@ const PoultryStatList = () => {
       try {
         setLoading(true);
         toggleToken();
-        PoultryStatService.getPoultryStat(search, 1, 10, config.current)
+        const token = sessionStorage.getItem("token");
+        const decode = jwtDecode(token);
+        const farm = decode.data.farm ? decode.data.farm._id : null;
+        PoultryStatService.getPoultryStat(farm, search, 1, 10, config.current)
           .then((response) => {
             setStats(response.data);
             setTotalrecord(response.totalRecords);

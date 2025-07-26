@@ -12,7 +12,6 @@ const Recommendations = () => {
     await RecommendationService.GetRecentRecommendation()
       .then((data) => {
         setRecommendation(data);
-        console.log(data);
       })
       .catch((err) => {
         console.error("Recommendations:", err.message);

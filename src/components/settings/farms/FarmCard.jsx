@@ -26,6 +26,7 @@ const FarmCard = () => {
           setFieldValue("name", data.name);
           setFieldValue("owner", data.owner);
           setFieldValue("address", data.address);
+          setFieldValue("phone", data.phone);
         })
         .catch((err) => {
           if (!err.valid_token) {
@@ -135,12 +136,12 @@ const FarmCard = () => {
     handleSubmit,
     setFieldValue,
     setFieldError,
-    handleBlur,
   } = useFormik({
     initialValues: {
       name: "",
       owner: "",
       address: "",
+      phone: "",
     },
     validationSchema: FarmSchema,
     onSubmit,
@@ -164,11 +165,6 @@ const FarmCard = () => {
               value={values.name}
               placeholder="Farm Name"
               onChange={handleChange}
-              className={
-                errors.roles && touched.roles
-                  ? "p-inputtext-sm  p-invalid"
-                  : "p-inputtext-sm"
-              }
             />
             {errors.name && touched.name ? (
               <div>
@@ -204,6 +200,21 @@ const FarmCard = () => {
             {errors.address && touched.address ? (
               <div>
                 <small className="text-danger">{errors.address}</small>
+              </div>
+            ) : null}
+          </div>
+          <div className=" md:col-6 mt-2">
+            <InputText
+              id="phone"
+              style={{ width: "50%" }}
+              name="phone"
+              value={values.phone}
+              onChange={handleChange}
+              placeholder="Phone number"
+            />
+            {errors.phone && touched.phone ? (
+              <div>
+                <small className="text-danger ">{errors.phone}</small>
               </div>
             ) : null}
           </div>

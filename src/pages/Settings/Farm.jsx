@@ -12,7 +12,6 @@ import { Toast } from "primereact/toast";
 import { Divider } from "primereact/divider";
 import { Button } from "primereact/button";
 import { UserAuthContext } from "../../context/UserAuthContext";
-import { UserService } from "../../service/userService";
 import { Paginator } from "primereact/paginator";
 import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
 import { Dropdown } from "primereact/dropdown";
@@ -220,6 +219,7 @@ const Farm = () => {
           <Column field="name" header="Name" />
           <Column field="owner" header="Owner" />
           <Column field="address" header="Address" />
+          <Column field="phone" header="Phone Number" />
           <Column body={actionBodyTemplate} style={{ width: "30rem" }} />
         </DataTable>
         <Paginator

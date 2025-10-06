@@ -28,11 +28,16 @@ const PoultryStatEncoding = () => {
 
     const farms = JSON.parse(data);
     const farmOptions = farms.map((farm) => {
-      if (farm._id === decode.data.farm._id)
+      if (decode.data.farm && farm._id === decode.data.farm._id)
         return {
           label: farm.name,
           value: farm._id,
         };
+
+      return {
+        label: farm.name,
+        value: farm._id,
+      };
     });
     setFarms(farmOptions);
     if (id) {

@@ -10,6 +10,7 @@ import {
   Nh3Summary,
   ReadingsSummary,
   Recommendations,
+  PoultryStatSummary,
 } from "../components/dashboard";
 
 import moment from "moment-timezone";
@@ -42,11 +43,17 @@ const Dashboard = () => {
             </div>
           </div>
 
-          <div classNa
-          me="row">
+          <div className="row">
             <div className="col-md-12">
               <CardLayout title="Readings">
                 <ReadingsSummary />
+              </CardLayout>
+            </div>
+          </div>
+          <div>
+            <div className="col-md-12">
+              <CardLayout title="Poultry Statistics">
+                <PoultryStatSummary />
               </CardLayout>
             </div>
           </div>

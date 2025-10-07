@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Chart } from "primereact/chart";
 
-const LineChart = ({ chartData }) => {
+const LineChart = ({ chartData, type = "line" }) => {
   return (
     <div className="card">
-      <Chart type="line" data={chartData} />
+      <Chart type={type} data={chartData} />
     </div>
   );
 };

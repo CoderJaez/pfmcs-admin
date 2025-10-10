@@ -52,7 +52,9 @@ const Dashboard = () => {
           </div>
           <div>
             <div className="col-md-12">
-              <CardLayout title="Poultry Statistics">
+              <CardLayout
+                title={`Poultry Statistics Summary for ${new Date().getFullYear()}`}
+              >
                 <PoultryStatSummary />
               </CardLayout>
             </div>

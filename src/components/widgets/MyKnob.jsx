@@ -8,6 +8,9 @@ import { OverlayPanel } from "primereact/overlaypanel";
 import { Avatar } from "primereact/avatar";
 import { Badge } from "primereact/badge";
 import { UserAuthContext } from "../../context/UserAuthContext";
+import pusher from "../../utils/pusher-channel";
+import { use } from "react";
+
 moment.tz.setDefault("Asia/Manila");
 
 const MyKnob = ({
@@ -45,62 +48,110 @@ const MyKnob = ({
     }
   };
 
-  const fetchData = async () => {
-    try {
-      const _url = forDemo
-        ? `${url}temp-readings/demo?device_id=${deviceId}&vpin=${vpin}`
-        : `${url}temp-readings/?device_id=${deviceId}&vpin=${vpin}`;
-      axios.get(_url).then(function (response) {
-        const data = response.data;
-        if (data !== undefined) {
-          const createdAt = moment(data.createdAt);
-          const currentDate = moment(new Date());
-          const value = data.value;
+  // const fetchData = async () => {
+  //   try {
+  //     const _url = forDemo
+  //       ? `${url}temp-readings/demo?device_id=${deviceId}&vpin=${vpin}`
+  //       : `${url}temp-readings/?device_id=${deviceId}&vpin=${vpin}`;
+  //     axios.get(_url).then(function (response) {
+  //       const data = response.data;
+  //       if (data !== undefined) {
+  //         const createdAt = moment(data.createdAt);
+  //         const currentDate = moment(new Date());
+  //         const value = data.value;
 
-          if (currentDate >= createdAt) setSensor(value);
-          const _threshold = getThreshold(sensor_type, value);
-          if (_threshold) {
-            setThreshold(_threshold);
-            const container = containerRef.current;
-            if (container) container.innerHTML = _threshold.recommendation;
-            if (sensor_type === "Temperature") {
-              const _switch = dataStreams.find((d) => d.type === "switch");
-              if (_switch) {
-                if (
-                  _threshold.label === "HIGH" ||
-                  _threshold.label === "CRITICAL"
-                ) {
-                  setVentilation({
-                    device_id: deviceId,
-                    vpin: _switch.vpin,
-                    value: 1,
-                  });
-                } else {
-                  setVentilation({
-                    device_id: deviceId,
-                    vpin: _switch.vpin,
-                    value: 0,
-                  });
-                }
+  //         if (currentDate >= createdAt) setSensor(value);
+  //         const _threshold = getThreshold(sensor_type, value);
+  //         if (_threshold) {
+  //           setThreshold(_threshold);
+  //           const container = containerRef.current;
+  //           if (container) container.innerHTML = _threshold.recommendation;
+  //           if (sensor_type === "Temperature") {
+  //             const _switch = dataStreams.find((d) => d.type === "switch");
+  //             if (_switch) {
+  //               if (
+  //                 _threshold.label === "HIGH" ||
+  //                 _threshold.label === "CRITICAL"
+  //               ) {
+  //                 setVentilation({
+  //                   device_id: deviceId,
+  //                   vpin: _switch.vpin,
+  //                   value: 1,
+  //                 });
+  //               } else {
+  //                 setVentilation({
+  //                   device_id: deviceId,
+  //                   vpin: _switch.vpin,
+  //                   value: 0,
+  //                 });
+  //               }
+  //             }
+  //           }
+  //         }
+  //       }
+  //     });
+  //   } catch (error) {
+  //     console.error("Error Knob:", error.message);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   const intervalId = setInterval(() => {
+  //     fetchData();
+  //   }, 10000);
+
+  //   return () => {
+  //     clearInterval(intervalId);
+  //   };
+  // }, []);
+  useEffect(() => {
+    const channel = pusher.subscribe("what-sense");
+
+    const handleMessage = (data) => {
+      if (data.vpin === vpin) {
+        const value = data.value;
+
+        setSensor((prev) => {
+          if (prev !== value) return value;
+          return prev;
+        });
+        const _threshold = getThreshold(sensor_type, value);
+        if (_threshold) {
+          setThreshold(_threshold);
+          const container = containerRef.current;
+          if (container) container.innerHTML = _threshold.recommendation;
+          if (sensor_type === "Temperature") {
+            const _switch = dataStreams.find((d) => d.type === "switch");
+            if (_switch) {
+              if (
+                _threshold.label === "HIGH" ||
+                _threshold.label === "CRITICAL"
+              ) {
+                setVentilation({
+                  device_id: deviceId,
+                  vpin: _switch.vpin,
+                  value: 1,
+                });
+              } else {
+                setVentilation({
+                  device_id: deviceId,
+                  vpin: _switch.vpin,
+                  value: 0,
+                });
               }
             }
           }
         }
-      });
-    } catch (error) {
-      console.error("Error Knob:", error.message);
-    }
-  };
+      }
+    };
 
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      fetchData();
-    }, 10000);
-
+    channel.bind(`device-${vpin}`, handleMessage);
     return () => {
-      clearInterval(intervalId);
+      channel.unbind(`device-${vpin}`, handleMessage);
+      pusher.unsubscribe(`what-sense`);
     };
   }, []);
+
   return (
     <div>
       <Knob

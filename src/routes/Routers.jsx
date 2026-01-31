@@ -14,6 +14,7 @@ import {
   CriteriaAssessment,
   Recommendations,
   Farm,
+  WaterConsumption,
 } from "../pages";
 import AdminLayout from "../shared/components/layouts/AdminLayout";
 import { DeviceCard } from "../components/settings/devices";
@@ -78,6 +79,7 @@ const Routers = () => {
 
           <Route path="/readings" element={<Readings />} />
           <Route path="/rawdata-readings" element={<ReadingsRealtimeData />} />
+          <Route path="/water-consumption" element={<WaterConsumption />} />
         </Route>
         <Route path="*" element={<Error404 />} />
       </Routes>

@@ -10,7 +10,7 @@ export const ReadingService = {
     limit,
     dateFrom,
     dateTo,
-    config
+    config,
   ) => {
     const queries = farmId
       ? `?farm=${farmId}&search=${search}&page=${page}&limit=${limit}&date_from=${dateFrom}&date_to=${dateTo}`
@@ -29,13 +29,13 @@ export const ReadingService = {
     limit,
     dateFrom,
     dateTo,
-    config
+    config,
   ) => {
     return await new Promise((resolve, reject) => {
       axios
         .get(
           `${url}temp-readings/realtime?search=${search}&page=${page}&limit=${limit}&date_from=${dateFrom}&date_to=${dateTo}`,
-          config
+          config,
         )
         .then((res) => resolve(res.data))
         .catch((err) => reject(err.response.data));

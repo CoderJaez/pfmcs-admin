@@ -13,10 +13,12 @@ import CriteriaAssessment from "./Settings/CriteriaAssessment";
 import Recommendations from "./Recommendations";
 import PoultryStatList from "./PoultryStatList";
 import PoultryStatEncoding from "./PoultryStatEncoding";
+import WaterConsumption from "./WaterConsumption";
 export {
   PoultryStatEncoding,
   PoultryStatList,
   Recommendations,
+  WaterConsumption,
   Login,
   CriteriaAssessment,
   Dashboard,

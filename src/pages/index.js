@@ -14,11 +14,13 @@ import Recommendations from "./Recommendations";
 import PoultryStatList from "./PoultryStatList";
 import PoultryStatEncoding from "./PoultryStatEncoding";
 import WaterConsumption from "./WaterConsumption";
+import SmsLogs from "./SmsLogs";
 export {
   PoultryStatEncoding,
   PoultryStatList,
   Recommendations,
   WaterConsumption,
+  SmsLogs,
   Login,
   CriteriaAssessment,
   Dashboard,

@@ -18,6 +18,19 @@
     <div class="wrapper" id="root">
 
     </div>
+    <script>
+      (function (location) {
+        if (location.search[1] === "/") {
+          const decoded = location.search
+            .slice(1)
+            .split("&")
+            .map((part) => part.replace(/~and~/g, "&"))
+            .join("?");
+
+          window.history.replaceState(null, "", decoded + location.hash);
+        }
+      })(window.location);
+    </script>
     <script type="module" src="/src/main.jsx"></script>
     <!-- jQuery -->
     <script src="/plugins/jquery/jquery.min.js"></script>

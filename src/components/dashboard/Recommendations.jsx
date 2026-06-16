@@ -7,13 +7,22 @@ import "../../assets/css/style.css";
 const Recommendations = () => {
   const date = moment(new Date()).format(`MMMM DD, YYYY`);
   const [recommendation, setRecommendation] = useState(null);
+  const isCurrentDateRecommendation = (data) => {
+    const recommendationDate =
+      data?.dateFrom || data?.dateTo || data?.createdAt || data?.updatedAt;
+
+    if (!recommendationDate) return false;
+
+    return moment(recommendationDate).isSame(moment(), "day");
+  };
 
   const fetchRecommendation = async () => {
     await RecommendationService.GetRecentRecommendation()
       .then((data) => {
-        setRecommendation(data);
+        setRecommendation(isCurrentDateRecommendation(data) ? data : null);
       })
       .catch((err) => {
+        setRecommendation(null);
         console.error("Recommendations:", err.message);
       });
   };

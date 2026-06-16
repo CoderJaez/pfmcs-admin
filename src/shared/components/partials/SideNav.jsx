@@ -116,7 +116,6 @@ const SideNav = React.memo(() => {
                   <p>Water Consumption</p>
                 </Link>
               </li>
-
               <li className="nav-item">
                 <Link
                   to="poultry-stat"
@@ -145,6 +144,18 @@ const SideNav = React.memo(() => {
               {userRef.current?.roles === "ADMIN" ? (
                 <>
                   <li className="nav-header">Settings</li>
+                  <li className="nav-item">
+                    <Link
+                      to="sms-logs"
+                      className={`nav-link ${
+                        urlPath === "sms-logs" ? "active" : ""
+                      }`}
+                      onClick={() => setUrlPath("sms-logs")}
+                    >
+                      <i className="nav-icon fas fa-sms" />
+                      <p>SMS Alert Logs</p>
+                    </Link>
+                  </li>
                   <li className="nav-item">
                     <Link
                       to="settings/devices"
